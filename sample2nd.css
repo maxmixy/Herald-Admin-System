@@ -1,1 +1,71 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header {
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header__logo {
+    flex: 1;
+}
+
+.header__title {
+    flex: 2;
+    text-align: center;
+}
+
+.header__buttons {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.header__buttons button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+}
+
+.header__buttons button:hover {
+    background-color: #444;
+}
+
+.content-box {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-height: 500px;
+}
+.sidebar-box {
+    background-color: #e0e0e0;
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 30%; /* Adjust width as needed */
+    float: right;  /* Positions the box to the right of the content */
+}
+
+{
+    width: 65%;  /* Adjust width as needed to make space for sidebar */
+    float: left; /* Positions the content box to the left */
+}
 
