@@ -3,11 +3,21 @@
 <head>
 <style> 
 
+
 .div2 {
   width: 1000px;
   height: 800px;  
   padding: 300px;
   border: 2px solid red;
+}
+
+.div2{
+// Rounded Curve Effect
+   border-radius: 25px;
+    border: 2px solid #73AD21;
+    padding: 300px;
+    width: 1000px;
+    height: 800px;
 }
 </style>
 </head>
