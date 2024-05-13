@@ -89,6 +89,14 @@
       <li><a href="#">Assignment Active</a></li>
       <li><a href="#">Progress Overview</a></li>
     </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+    </ul>
+<ul class="nav navbar-nav navbar-right">
+      <li><a href="#"><span class="glyphicon glyphicon-user"></span> Log in</a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Log out</a></li>
+    </ul>
   </div>
 </nav>
   
@@ -97,9 +105,18 @@
   <p>Short Description/ Story Behind TBH</p>
 </div>
 
+// Checkbox 
+<div class="checkbox">
+  <label><input type="checkbox" value="">In Progress</label>
+</div>
+<div class="checkbox">
+  <label><input type="checkbox" value=""> Still Ongoing</label>
+</div>
+<div class="checkbox disabled">
+  <label><input type="checkbox" value="" disabled>Completed</label>
+</div>
 </body>
 </html>
-
 
 </body>
 </html>
