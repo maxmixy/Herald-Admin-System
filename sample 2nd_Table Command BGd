@@ -29,6 +29,78 @@
 <br>
 <div class="div2">content</div>
 
+// Allignment (right)  and button
+.right {
+  position: absolute;
+  right: 100px;
+  width: 300px;
+  border: 3px solid #73AD21;
+  padding: 300px;
+}
+
+.button {
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.button1 {background-color: #04AA6D;} /* Green */
+.button2 {background-color: #008CBA;} /* Blue */
+
+</style>
+</head>
+<body>
+
+<button class="Assignment active">Green</button>
+<button class="Progress Overview">Blue</button>
+
+</body>
+
+<head>
+  <title>Navigation Bar</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">The Bedan Herald</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#">About</a></li>
+      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> Assignment Task <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Status</a></li>
+          <li><a href="#">Due Date</a></li>
+          <li><a href="#">Postion</a></li>
+        </ul>
+      </li>
+      <li><a href="#">Assignment Active</a></li>
+      <li><a href="#">Progress Overview</a></li>
+    </ul>
+  </div>
+</nav>
+  
+<div class="container">
+  <h3>About Herald</h3>
+  <p>Short Description/ Story Behind TBH</p>
+</div>
+
+</body>
+</html>
+
+
 </body>
 </html>
 
