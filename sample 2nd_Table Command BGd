@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style> 
+
+.div2 {
+  width: 1000px;
+  height: 800px;  
+  padding: 300px;
+  border: 2px solid red;
+}
+</style>
+</head>
+<body>
+
+<h1>The Bedan Herald</h1>
+
+<div class="div1"> informations </div>
+<br>
+<div class="div2">content</div>
+
+</body>
+</html>
+
+
