@@ -17,10 +17,16 @@ if (isset($_SESSION["MemberID"]) && isset($_SESSION["name"])) {
         <body>
             <div class="header">
                 <a href="Home.php"><img src="The Bedan Herald.png" style="width: 30%; height: auto;"> </a>
+                <?php 
+                if ($_SESSION["position"] == 'Section Editor' || $_SESSION["position"] == 'Head Admin' || $_SESSION["position"] == 'Admin'){
+                ?>
                 <a class="active" href="Home.php">Assignments</a>
                 <a href="FeaturesTasks.php">Assign Tasks</a>
                 <a href="#about">Prorgess Overview</a>
-                <a href="LogOut.php">Logout</a>
+                <?php
+                }
+                ?>
+                <a href="LogOut.php">Logout</a> 
             </div>
             <br><br>
             <h1>Good day <?php echo $_SESSION['name'] ?>, here are your active assignments: </h1>

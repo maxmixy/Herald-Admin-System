@@ -33,6 +33,7 @@ include "db_conn.php";
             $_SESSION['username'] = $row['UserID'];
             $_SESSION['name'] = $row['Name'];
             $_SESSION['MemberID'] = $row['MemberID'];
+            $_SESSION['position'] = $row['Position'];
             header("Location: Home.php");
             exit();
         }

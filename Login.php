@@ -11,7 +11,7 @@
     <br><br><br>
     <div class="loginMain">
         <div class="loginLogo">
-            <img src="TBHLogo.png" alt="Logo" style="width: 80%; height: 80%; filter: drop-shadow(0, 0, rgba(0, 0, 7px, 0.4));">
+            <img src="TBHLogo.png" alt="Logo" style="width: 70%; height: 70%;">
         </div>
         <div class="loginContainer">
             <form action="LogProc.php" method="post">
@@ -26,3 +26,4 @@
     </div> 
 </body>
 </html> 
+
