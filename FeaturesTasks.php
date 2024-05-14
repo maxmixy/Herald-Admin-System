@@ -17,26 +17,27 @@ if (isset($_SESSION["MemberID"]) && isset($_SESSION["name"])) {
         <body>
             <div class="header">
                 <a href="Home.php"><img src="The Bedan Herald.png" style="width: 30%; height: auto;"> </a>
-                <a class="active" href="Home.php">Assignments</a>
-                <a href="Tasks.php">Assign Tasks</a>
+                <a href="Home.php">Assignments</a>
+                <a class="active"href="Tasks.php">Assign Tasks</a>
                 <a href="#about">Prorgess Overview</a>
                 <a href="LogOut.php">Logout</a>
             </div>
             <br><br>
-            <h1>Good day <?php echo $_SESSION['name'] ?>, here are your active assignments: </h1>
+            <h1>Assign tasks here: </h1>
             <?php
-                $sql = "SELECT * FROM ArticleAssignment WHERE WriterID='{$_SESSION['MemberID']}'";
+                $sql = "SELECT * FROM ArticleAssignment WHERE Section='Features'";
                 $result = mysqli_query($conn, $sql);
             
                 if ($result) {
                     while ($row = mysqli_fetch_assoc($result)) {
-                    $section = $row["Section"];
-                    $topic = $row["ArticleTopic"];  
-                    $notes = $row["Notes"];  
-                    $deadline = $row["Deadline"];  
-                    $status = $row["ArticlePreStatus"];  
-                    
-                    echo $section . "&emsp;" . $topic . "&emsp;" . $notes . "&emsp;" . $deadline . "&emsp;" . $status . "<br>";
+                        $artID = $row["ArticleID"];
+                        $name = $row["WriterName"];
+                        $topic = $row["ArticleTopic"];
+                        $notes = $row["Notes"];
+                        $deadline = $row["Deadline"];
+                        $status = $row["ArticlePreStatus"];
+                        
+                        echo $artID . "&emsp;" . $name . "&emsp;" . $topic . "&emsp;" . $notes . "&emsp;" . $deadline . "&emsp;" . $status . "<br>";
                     }
                 } else {
                     echo "No assignments";
