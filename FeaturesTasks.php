@@ -18,7 +18,7 @@ if (isset($_SESSION["MemberID"]) && isset($_SESSION["name"])) {
             <div class="header">
                 <a href="Home.php"><img src="The Bedan Herald.png" style="width: 30%; height: auto;"> </a>
                 <a href="Home.php">Assignments</a>
-                <a class="active"href="Tasks.php">Assign Tasks</a>
+                <a class="active"href="FeaturesTasks.php">Assign Tasks</a>
                 <a href="#about">Prorgess Overview</a>
                 <a href="LogOut.php">Logout</a>
             </div>
