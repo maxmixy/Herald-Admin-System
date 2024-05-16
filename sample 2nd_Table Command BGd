@@ -1,177 +1,338 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style> 
+  <title>The Bedan Herald</title>
+  <style>
+    /* Common styles */
+    .large-box {
+      width: 1000px;
+      height: 800px;
+      padding: 20px;
+      border: 2px solid red;
+      border-radius: 25px;
+      margin: 0 auto;
+    }
 
+    .navbar {
+      width: 100%;
+      background-color: #555;
+      overflow: auto;
+    }
 
-.div2 {
-  width: 1000px;
-  height: 800px;  
-  padding: 300px;
-  border: 2px solid red;
-}
+    .navbar a {
+      float: left;
+      padding: 12px;
+      color: white;
+      text-decoration: none;
+      font-size: 17px;
+    }
 
-.div2{
-// Rounded Curve Effect
-   border-radius: 25px;
-    border: 2px solid #73AD21;
-    padding: 300px;
-    width: 1000px;
-    height: 800px;
-}
-</style>
+    .navbar a:hover {
+      background-color: #000;
+    }
+
+    .active {
+      background-color: #04AA6D;
+    }
+
+    /* Table styles */
+    .table-container {
+      margin-top: 20px;
+    }
+
+    .table-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    /* Logo and Title styles */
+    .logo-title {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      width: 150px;
+      height: auto;
+    }
+  </style>
 </head>
 <body>
 
-<h1>The Bedan Herald</h1>
-
-<div class="div1"> informations </div>
-<br>
-<div class="div2">content</div>
-
-// Allignment (right)  and button
-.right {
-  position: absolute;
-  right: 100px;
-  width: 300px;
-  border: 3px solid #73AD21;
-  padding: 300px;
-}
-
-.button {
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-}
-
-.button1 {background-color: #04AA6D;} /* Green */
-.button2 {background-color: #008CBA;} /* Blue */
-
-</style>
-</head>
-<body>
-
-<button class="Assignment active">Green</button>
-<button class="Progress Overview">Blue</button>
-
-</body>
-
-<head>
-  <title>Navigation Bar</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-</head>
-<body>
-
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">The Bedan Herald</a>
-    </div>
-    <ul class="nav navbar-nav">
-      <li class="active"><a href="#">About</a></li>
-      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> Assignment Task <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a href="#">Status</a></li>
-          <li><a href="#">Due Date</a></li>
-          <li><a href="#">Postion</a></li>
-        </ul>
-      </li>
-      <li><a href="#">Assignment Active</a></li>
-      <li><a href="#">Progress Overview</a></li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-      <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-      <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-    </ul>
-<ul class="nav navbar-nav navbar-right">
-      <li><a href="#"><span class="glyphicon glyphicon-user"></span> Log in</a></li>
-      <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Log out</a></li>
-    </ul>
-  </div>
-</nav>
-  
-<div class="container">
-  <h3>About Herald</h3>
-  <p>Short Description/ Story Behind TBH</p>
+<!-- Logo and Title -->
+<div class="logo-title">
+  <img src="your_logo_image_url" alt="Logo" class="logo">
+  <h1>The Bedan Herald</h1>
 </div>
 
-// Checkbox 
-<div class="checkbox">
-  <label><input type="checkbox" value="">In Progress</label>
-</div>
-<div class="checkbox">
-  <label><input type="checkbox" value=""> Still Ongoing</label>
-</div>
-<div class="checkbox disabled">
-  <label><input type="checkbox" value="" disabled>Completed</label>
-</div>
-</body>
-</html>
-
-
-// Navigation Bar Icons
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+<!-- Navigation Bar -->
 <div class="navbar">
-  <a class="active" href="#"><i class="fa fa-fw fa-home"></i> Home</a>
-  <a href="#"><i class="fa fa-fw fa-search"></i> Assignmnent Tasks</a>
-  <a href="#"><i class="fa fa-fw fa-envelope"></i> Progress Overview</a>
-  <a href="#"><i class="fa fa-fw fa-user"></i> Log out</a>
+  <a class="active" href="#" onclick="showTable('assignment')">Assignment Task</a>
+  <a href="#" onclick="showTable('assigned')">Assigned Tasks</a>
+  <a href="#" onclick="showTable('progress')">Progress Overview</a>
 </div>
-// navigation bar icon css
-body {font-family: Arial, Helvetica, sans-serif;}
 
-.navbar {
-  width: 100%;
-  background-color: #555;
-  overflow: auto;
-}
+<!-- Large Box -->
+<div class="large-box" id="content">
+  <!-- Initially, no table is shown -->
+</div>
 
-.navbar a {
-  float: left;
-  padding: 12px;
-  color: white;
-  text-decoration: none;
-  font-size: 17px;
-}
+<script>
+  function showTable(tableType) {
+    var content = document.getElementById("content");
+    var html = "";
 
-.navbar a:hover {
-  background-color: #000;
-}
+    switch (tableType) {
+      case "assignment":
+        html = `
+          <div class="table-container">
+            <h2 class="table-title">Assignment Task</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Task Name</th>
+                  <th>Status</th>
+                  <th>Due Date</th>
+                  <th>Ongoing</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Insert assignment task data here -->
+                <tr>
+                  <td>Task 1</td>
+                  <td><input type="checkbox" value="status1"></td>
+                  <td><input type="checkbox" value="dueDate1"></td>
+                  <td><input type="checkbox" value="ongoing1"></td>
+                </tr>
+                <tr>
+                  <td>Task 2</td>
+                  <td><input type="checkbox" value="status2"></td>
+                  <td><input type="checkbox" value="dueDate2"></td>
+                  <td><input type="checkbox" value="ongoing2"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+        break;
+      case "assigned":
+        html = `
+          <!-- Assigned tasks table code here -->
+        `;
+        break;
+      case "progress":
+        html = `
+          <!-- Progress overview table code here -->
+        `;
+        break;
+    }
 
-.active {
-  background-color: #04AA6D;
-}
-
-@media screen and (max-width: 500px) {
-  .navbar a {
-    float: none;
-    display: block;
+    content.innerHTML = html;
   }
-}
-</style>
-<body>
+</script>
 
-<h2> Navigation Bar with Icons</h2>
-<p>Try to resize the browser window to see the responsive effect.</p>
-
-<div class="navbar">
-  <a class="active" href="#"><i class="fa fa-fw fa-home"></i> Home</a> 
-  <a href="#"><i class="fa fa-fw fa-search"></i> Search</a> 
-  <a href="#"><i class="fa fa-fw fa-envelope"></i> Contact</a> 
-  <a href="#"><i class="fa fa-fw fa-user"></i> Login</a>
-</div>
 </body>
 </html>
 
+
+// Assigned Task 
+<!DOCTYPE html>
+<html>
+<head>
+  <title>The Bedan Herald</title>
+  <style>
+    /* Common styles */
+    .large-box {
+      width: 1000px;
+      height: 800px;
+      padding: 20px;
+      border: 2px solid red;
+      border-radius: 25px;
+      margin: 0 auto;
+    }
+
+    .navbar {
+      width: 100%;
+      background-color: #555;
+      overflow: auto;
+    }
+
+    .navbar a {
+      float: left;
+      padding: 12px;
+      color: white;
+      text-decoration: none;
+      font-size: 17px;
+    }
+
+    .navbar a:hover {
+      background-color: #000;
+    }
+
+    .active {
+      background-color: #04AA6D;
+    }
+
+    /* Table styles */
+    .table-container {
+      margin-top: 20px;
+    }
+
+    .table-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    /* Logo and Title styles */
+    .logo-title {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      width: 150px;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Logo and Title -->
+<div class="logo-title">
+  <img src="your_logo_image_url" alt="Logo" class="logo">
+  <h1>The Bedan Herald</h1>
+</div>
+
+<!-- Navigation Bar -->
+<div class="navbar">
+  <a href="#" onclick="showTable('assignment')">Assignment Task</a>
+  <a class="active" href="#" onclick="showTable('assigned')">Assigned Tasks</a>
+  <a href="#" onclick="showTable('progress')">Progress Overview</a>
+</div>
+
+<!-- Large Box -->
+<div class="large-box" id="content">
+  <!-- Initially, no table is shown -->
+</div>
+
+<script>
+  function showTable(tableType) {
+    var content = document.getElementById("content");
+    var html = "";
+
+    switch (tableType) {
+      case "assignment":
+        html = `
+          <div class="table-container">
+            <h2 class="table-title">Assignment Task</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Task Name</th>
+                  <th>Status</th>
+                  <th>Due Date</th>
+                  <th>Ongoing</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Insert assignment task data here -->
+                <tr>
+                  <td>Task 1</td>
+                  <td><input type="checkbox" value="status1"></td>
+                  <td><input type="checkbox" value="dueDate1"></td>
+                  <td><input type="checkbox" value="ongoing1"></td>
+                </tr>
+                <tr>
+                  <td>Task 2</td>
+                  <td><input type="checkbox" value="status2"></td>
+                  <td><input type="checkbox" value="dueDate2"></td>
+                  <td><input type="checkbox" value="ongoing2"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+        break;
+      case "assigned":
+        html = `
+          <div class="table-container">
+            <h2 class="table-title">Assigned Tasks</h2>
+            <button style="float: right;" onclick="addTask()">Add Task</button>
+            <table>
+              <thead>
+                <tr>
+                  <th colspan="5">Assigned Task Table</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Insert assigned task data here -->
+                <!-- Assuming 10 rows and 5 columns as per your instruction -->
+                <!-- You can adjust as needed -->
+                <tr>
+                  <td>Task 1</td>
+                  <td>Task 2</td>
+                  <td>Task 3</td>
+                  <td>Task 4</td>
+                  <td>Task 5</td>
+                </tr>
+                <tr>
+                  <td>Task 6</td>
+                  <td>Task 7</td>
+                  <td>Task 8</td>
+                  <td>Task 9</td>
+                  <td>Task 10</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+        break;
+      case "progress":
+        html = `
+          <!-- Progress overview table code here -->
+        `;
+        break;
+    }
+
+    content.innerHTML = html;
+  }
+
+  function addTask() {
+    // Functionality to add a task goes here
+    alert("Task added!");
+  }
+</script>
+
+</body>
+</html>
 
