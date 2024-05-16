@@ -20,9 +20,9 @@ if (isset($_SESSION["MemberID"]) && isset($_SESSION["name"])) {
                 <?php 
                 if ($_SESSION["position"] == 'Section Editor' || $_SESSION["position"] == 'Head Admin' || $_SESSION["position"] == 'Admin'){
                 ?>
-                <a class="active" href="Home.php">Assignments</a>
+                <a class="active" href="Home2.php">Assignments</a>
                 <a href="FeaturesTasks.php">Assign Tasks</a>
-                <a href="#about">Prorgess Overview</a>
+                <a href="OverallTasks.php">Prorgess Overview</a>
                 <?php
                 }
                 ?>
