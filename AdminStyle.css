@@ -114,4 +114,32 @@ button {
 button:hover {
     opacity: 0.8;
 }
+
+.table-container {
+  margin-top: 20px;
+}
+
+.table-title {
+  text-align: center;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid #dddddd;
+  text-align: center;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+th {
+  background-color: #dddddd;
+}
+
   
