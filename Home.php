@@ -19,11 +19,9 @@ if (isset($_SESSION["MemberID"]) && isset($_SESSION["name"])) {
                     <?php 
                     if ($_SESSION["position"] == 'Section Editor' || $_SESSION["position"] == 'Head Admin' || $_SESSION["position"] == 'Admin'){
                     ?>
-                   <tr> // buttons
-                    <td><a class="active" href="Home.php">Assignments</a></td>
-                    <td><a href="FeaturesTasks.php">Assign Tasks</a></td>
-                    <td><a href="#about">Progress Overview</a></td>
-                  </tr>
+                    <a class="active" href="Home.php">Assignments</a></td>
+                    <a href="FeaturesTasks.php">Assign Tasks</a></td>
+                    <a href="#about">Progress Overview</a></td>
                     <?php
                     }
                     ?>
