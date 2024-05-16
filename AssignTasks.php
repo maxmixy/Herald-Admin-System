@@ -8,7 +8,7 @@ if (isset($_SESSION["MemberID"]) && isset($_SESSION["name"])) {
     <!DOCTYPE html>
     <html>
         <head>  
-            <title>HOME</title>
+            <title>Assigning Tasks</title>
             <link rel="stylesheet" href="AdminStyle.css">
         </head>
 
@@ -17,21 +17,24 @@ if (isset($_SESSION["MemberID"]) && isset($_SESSION["name"])) {
         <body>
         <br><br>
             <div class="header">
-                <a href="Home.php"><img src="The Bedan Herald.png" style="width: 30%; height: auto;"> </a>
+                <a href="Home2.php"><img src="The Bedan Herald.png" style="width: 30%; height: auto;"> </a>
                 <?php 
                 if ($_SESSION["position"] == 'Section Editor' || $_SESSION["position"] == 'Head Admin' || $_SESSION["position"] == 'Admin'){
                 ?>
-                <a class="active" href="Home2.php">Assignments</a>
-                <a href="FeaturesTasks.php">Assign Tasks</a> 
-                <a href="OverallTasks.php">Task Overview</a>
+                <a class="active" href="Home2.php" style="text-decoration: underline;">Assignments</a>
+                <a href="AssignTasks.php" style="text-decoration: underline;">Assign Tasks</a>
+                <a href="OverallTasks.php" style="text-decoration: underline;">Progress Overview</a>
+                <?php
+                }if ($_SESSION["position"] == 'Head Admin' || $_SESSION["position"] == 'Human Resources'){
+                ?>
+                <a href="AddAccount.php" style="text-decoration: underline;">Create Accounts</a>
                 <?php
                 }
                 ?>
-                <a href="LogOut.php">Logout</a> 
-            </div>
-            <div class="content"> 
-            <br><br>
-            <h1>Assigned tasks: </h1>
+                <a href="LogOut.php" style="text-decoration: underline;">Logout</a> 
+                <br><br>
+            </div> 
+            <h1>Assign tasks here: </h1>
             <?php
                 $sql = "SELECT * FROM ArticleAssignment WHERE Section='Features'";
                 $result = mysqli_query($conn, $sql);
@@ -52,7 +55,6 @@ if (isset($_SESSION["MemberID"]) && isset($_SESSION["name"])) {
                 }
                 $conn->close();
             ?>
-            </div> 
         </body>
     </html>
     

@@ -15,11 +15,22 @@ if (isset($_SESSION["MemberID"]) && isset($_SESSION["name"])) {
     </head>
     <body> 
         <div class="header">
-            <a href="Home.php"><img src="The Bedan Herald.png" style="width: 30%; height: auto;"> </a>
-            <a href="Home.php">Assignments</a>
-            <a class="active"href="FeaturesTasks.php">Assign Tasks</a>
-            <a href="#about">Prorgess Overview</a>
-            <a href="LogOut.php">Logout</a>
+            <a href="Home2.php"><img src="The Bedan Herald.png" style="width: 30%; height: auto;"> </a>
+            <?php 
+            if ($_SESSION["position"] == 'Section Editor' || $_SESSION["position"] == 'Head Admin' || $_SESSION["position"] == 'Admin'){
+            ?>
+            <a class="active" href="Home2.php" style="text-decoration: underline;">Assignments</a>
+            <a href="AssignTasks.php" style="text-decoration: underline;">Assign Tasks</a>
+            <a href="OverallTasks.php" style="text-decoration: underline;">Progress Overview</a>
+            <?php
+            }if ($_SESSION["position"] == 'Head Admin' || $_SESSION["position"] == 'Human Resources'){
+            ?>
+            <a href="AddAccount.php" style="text-decoration: underline;">Create Accounts</a>
+            <?php
+            }
+            ?>
+            <a href="LogOut.php" style="text-decoration: underline;">Logout</a> 
+            <br><br>
         </div>
         <br><br><br>
         <div class="loginMain">

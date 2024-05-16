@@ -39,6 +39,21 @@ header {
     align-items: center; 
 }
 
+.content {
+    width: 90%; 
+    height: 100%; 
+    margin: 0px; 
+    padding: 40px;
+    border-radius: 50px; 
+    float: center;
+    background-image: linear-gradient(to bottom, #fff9f9 0%, #dddada 100%); 
+    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.5); 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+}
+
 .loginContainer {
     width: 50%; 
     height: 100%; 
@@ -114,8 +129,4 @@ button {
 button:hover {
     opacity: 0.8;
 }
-  
-tr{
-
-    
-}
+   
