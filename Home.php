@@ -20,9 +20,9 @@ if (isset($_SESSION["MemberID"]) && isset($_SESSION["name"])) {
                 <?php 
                 if ($_SESSION["position"] == 'Section Editor' || $_SESSION["position"] == 'Head Admin' || $_SESSION["position"] == 'Admin'){
                 ?>
-                <a class="active" href="Home.php">Assignments</a>
+                <a class="active" href="Home2.php">Assignments</a>
                 <a href="FeaturesTasks.php">Assign Tasks</a>
-                <a href="#about">Prorgess Overview</a>
+                <a href="OverallTasks.php">Prorgess Overview</a>
                 <?php
                 }
                 ?>
@@ -35,23 +35,18 @@ if (isset($_SESSION["MemberID"]) && isset($_SESSION["name"])) {
                 $result = mysqli_query($conn, $sql);
             
                 if ($result) {
-                    echo '<table>';
-                    echo '<tr><th>Section</th><th>Article Topic</th><th>Notes</th><th>Deadline</th><th>Status</th></tr>';
                     while ($row = mysqli_fetch_assoc($result)) {
                     $section = $row["Section"];
                     $topic = $row["ArticleTopic"];  
                     $notes = $row["Notes"];  
                     $deadline = $row["Deadline"];  
                     $status = $row["ArticlePreStatus"];  
-        
-        echo "<tr><td>$section</td><td>$topic</td><td>$notes</td><td>$deadline</td><td>$status</td></tr>";
-    }
-    echo '</table>';
-} else {
-    echo "No assignments";
-}
-
-
+                    
+                    echo $section . "&emsp;" . $topic . "&emsp;" . $notes . "&emsp;" . $deadline . "&emsp;" . $status . "<br>";
+                    }
+                } else {
+                    echo "No assignments";
+                }
                 $conn->close();
             ?>
         </body>

@@ -34,7 +34,7 @@ include "db_conn.php";
             $_SESSION['name'] = $row['Name'];
             $_SESSION['MemberID'] = $row['MemberID'];
             $_SESSION['position'] = $row['Position'];
-            header("Location: Home.php");
+            header("Location: Home2.php");
             exit();
         }
         else {

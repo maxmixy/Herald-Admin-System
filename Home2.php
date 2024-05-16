@@ -15,7 +15,6 @@ if (isset($_SESSION["MemberID"]) && isset($_SESSION["name"])) {
         
 
         <body>
-        <br><br>
             <div class="header">
                 <a href="Home.php"><img src="The Bedan Herald.png" style="width: 30%; height: auto;"> </a>
                 <?php 
@@ -29,25 +28,30 @@ if (isset($_SESSION["MemberID"]) && isset($_SESSION["name"])) {
                 ?>
                 <a href="LogOut.php">Logout</a> 
             </div>
-            <br><br>
-            <h1>Assign tasks here: </h1>
-            <?php
-                $sql = "SELECT * FROM ArticleAssignment WHERE Section='Features'";
-                $result = mysqli_query($conn, $sql);
             
+            <br><br>
+            <h1>Good day <?php echo $_SESSION['name'] ?>, here are your active assignments: </h1>
+            <?php
+                $sql = "SELECT * FROM ArticleAssignment WHERE WriterID='{$_SESSION['MemberID']}'";
+                $result = mysqli_query($conn, $sql);
+
                 if ($result) {
+                    echo '<table>';
+                    echo '<tr><th>Section</th><th>Article Topic</th><th>Notes</th><th>Deadline</th><th>Status</th></tr>';
                     while ($row = mysqli_fetch_assoc($result)) {
-                        $artID = $row["ArticleID"];
-                        $name = $row["WriterName"];
-                        $topic = $row["ArticleTopic"];
-                        $notes = $row["Notes"];
-                        $deadline = $row["Deadline"];
-                        $status = $row["ArticlePreStatus"];
+                        $section = $row["Section"];
+                        $topic = $row["ArticleTopic"];  
+                        $notes = $row["Notes"];  
+                        $deadline = $row["Deadline"];  
+                        $status = $row["ArticlePreStatus"];  
                         
-                        echo $artID . "&emsp;" . $name . "&emsp;" . $topic . "&emsp;" . $notes . "&emsp;" . $deadline . "&emsp;" . $status . "<br>";
+                        echo "<tr><td>$section</td><td>$topic</td><td>$notes</td><td>$deadline</td><td>$status</td></tr>";
                     }
+                    echo '</table>';
                 } else {
+                    echo '<div class="large-box" id="content">';
                     echo "No assignments";
+                    echo '</div>';
                 }
                 $conn->close();
             ?>
