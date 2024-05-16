@@ -3,20 +3,28 @@ body {
     font-family: sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #F2F2F2;  
+    background-color: #C3C0C0;  
     align-items: center; 
 }
 
-a{
+a:link{
     font-family: sans-serif;
+    font-size: 16px;
     margin: 0;
     padding: 0; 
     color: #7B7B7B;
     align-items: center; 
+    text-decoration: none !important;
 }
+
 a:hover{
     color: #000;
+    text-decoration: none !important;
 }
+a:visited, a:active{
+  text-decoration: none !important;
+}
+
 
 .bigBox {
     display: flex;
@@ -40,14 +48,14 @@ header {
 }
 
 .loginContainer {
-    width: 40%; 
+    width: 50%; 
     height: 100%; 
     margin: 0px; 
     padding: 40px;
     border-radius: 50px; 
     float: right;
     background-image: linear-gradient(to right, #fff 0%, #fff 100%); 
-    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.5); 
+    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.3); 
     display: flex; 
     flex-direction: column; 
     justify-content: center; 
@@ -55,10 +63,10 @@ header {
 }
 
 .loginLogo {
-    width: 60%; 
+    width: 50%; 
     height: 60%; 
     margin: auto; 
-    padding: 40px;
+    padding: 20px;
     border-radius: 50px; 
     float: left;
     background-image: linear-gradient(to right, #9B1919 0%, #9B1919 100%);   
@@ -114,32 +122,41 @@ button {
 button:hover {
     opacity: 0.8;
 }
-
-.table-container {
-  margin-top: 20px;
-}
-
-.table-title {
-  text-align: center;
-}
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-th, td {
-  border: 1px solid #dddddd;
-  text-align: center;
-  padding: 8px;
-}
-
-tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-th {
-  background-color: #dddddd;
-}
-
   
+.table-container {
+    margin-top: 20px;
+  }
+  
+  .table-title {
+    text-align: center;
+  }
+  
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  th, td {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  th {
+    background-color: #dddddd;
+  }
+  
+  .large-box {
+    display: flex;
+    width: 1000px;
+    min-height: 400px;
+    height: 800px;
+    padding: 20px;
+    border: 2px solid red;
+    border-radius: 25px;
+    margin: 0 auto;
+  }
