@@ -23,22 +23,21 @@ include "db_conn.php";
         exit();
     }
 
-	$sql = "SELECT * FROM Members WHERE UserID='$username' AND Password='$pass'";
+	$sql = "SELECT * FROM users WHERE username='$username'";
 	$result = mysqli_query($conn, $sql);
 
-	if (mysqli_num_rows($result) === 1){
-        $row = mysqli_fetch_array($result);
-        if($row['UserID'] === $username && $row['Password'] === $pass){
-            echo "Logged in!";
-            $_SESSION['username'] = $row['UserID'];
-            $_SESSION['name'] = $row['Name'];
-            $_SESSION['MemberID'] = $row['MemberID'];
-            header("Location: Home.php");
-            exit();
-        }
-        else {
-            header("Location: Login.php?error=Incorrect Username or ID");
-        }
+	if (mysqli_num_rows($result) > 0){
+        while($row = mysqli_fetch_array($result)){
+            if($row['username'] === $username && $row['password'] === $pass){
+                echo "Logged in!";
+                $_SESSION['name'] = $row['name'];
+                header("Location: home.php");
+                exit();
+            }
+            else {
+                header("Location: Login.php?error=Incorrect Username or ID");
+            }
+        } 
 	}
 	else {
         header("Location: Login.php");

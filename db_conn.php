@@ -1,9 +1,9 @@
 <?php
 
-$servername = "localhost";
-	$username = "heraldmember";
-	$password = "ctkXb2cVpsQjbjR";
-	$dbname = "i8258503_wp1";
+	$servername = "localhost";
+	$username = "root";
+	$password = "";
+	$dbname = "morrison";
 
 	// Create connection
 	$conn = mysqli_connect($servername, $username, $password, $dbname);

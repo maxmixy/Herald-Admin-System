@@ -1,30 +1,23 @@
  
 body {
-    font-family: sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #C3C0C0;  
-    align-items: center; 
+    background-image: url('EmpRegBG.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    justify-content: center;
+    align-items: center;
 }
 
-a:link{
+a{
     font-family: sans-serif;
-    font-size: 16px;
     margin: 0;
     padding: 0; 
     color: #7B7B7B;
     align-items: center; 
-    text-decoration: none !important;
 }
-
 a:hover{
     color: #000;
-    text-decoration: none !important;
 }
-a:visited, a:active{
-  text-decoration: none !important;
-}
-
 
 .bigBox {
     display: flex;
@@ -37,7 +30,7 @@ header {
     height: 90%; 
     margin: auto; 
     padding: 40px;
-    border-radius: 50px; 
+    border-radius: 0px; 
     float: right;
     background-image: linear-gradient(to right, #fff 0%, #fff 100%); 
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); 
@@ -47,13 +40,34 @@ header {
     align-items: center; 
 }
 
-.loginContainer {
-    width: 50%; 
+.content {
+    width: 100%; 
     height: 100%; 
     margin: 0px; 
     padding: 40px;
-    border-radius: 50px; 
-    float: right;
+    border-radius: 0px; 
+    float: center;
+    background-image: linear-gradient(to bottom, #fff9f9 0%, #dddada 100%); 
+    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.5); 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+}
+
+.forms{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.loginContainer {
+    width: 20%; 
+    height: 100%; 
+    margin: 0px; 
+    padding: 0px;
+    border-radius: 0px; 
+    float: left;
     background-image: linear-gradient(to right, #fff 0%, #fff 100%); 
     box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.3); 
     display: flex; 
@@ -63,13 +77,12 @@ header {
 }
 
 .loginLogo {
-    width: 50%; 
-    height: 60%; 
-    margin: auto; 
-    padding: 20px;
-    border-radius: 50px; 
-    float: left;
-    background-image: linear-gradient(to right, #9B1919 0%, #9B1919 100%);   
+    width: 80%; 
+    height: 100%; 
+    margin: 0; 
+    padding: 00px;
+    border-radius: 0px; 
+    float: right;
     display: flex; 
     flex-direction: column; 
     justify-content: center; 
@@ -81,7 +94,7 @@ header {
     height: 40%; 
     margin: auto; 
     padding: 0px;
-    border-radius: 50px;  
+    border-radius: 0px; 
     background-image: linear-gradient(to right, #9B1919 0%, #9B1919 100%); 
     box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.5); 
     display: flex; 
@@ -90,7 +103,7 @@ header {
     align-items: center; 
 }
 
-input[type="text"], input[type="password"] {
+input[type="text"], input[type="password"], input[type="date"] {
     width: 80%;
     padding: 15px 20px;
     border: 1px solid #363636; 
@@ -122,41 +135,4 @@ button {
 button:hover {
     opacity: 0.8;
 }
-  
-.table-container {
-    margin-top: 20px;
-  }
-  
-  .table-title {
-    text-align: center;
-  }
-  
-  table {
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-  th, td {
-    border: 1px solid #dddddd;
-    text-align: center;
-    padding: 8px;
-  }
-  
-  tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  
-  th {
-    background-color: #dddddd;
-  }
-  
-  .large-box {
-    display: flex;
-    width: 1000px;
-    min-height: 400px;
-    height: 800px;
-    padding: 20px;
-    border: 2px solid red;
-    border-radius: 25px;
-    margin: 0 auto;
-  }
+   
