@@ -3,14 +3,55 @@ ob_start();
 session_start();
 include "db_conn.php";
 
-if (!isset($_SESSION["MemberID"])) {
-    $_SESSION['username'] = "admin";
-    $_SESSION['name'] = "Admin User";
-    $_SESSION['MemberID'] = "001";
-    $_SESSION['position'] = "Head Admin";
-}
-
-if (isset($_SESSION["MemberID"]) && isset($_SESSION["name"])) { 
+if (isset($_SESSION["username"]) && isset($_SESSION["org_id"])) { 
+    // Process form submission
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Get form data
+        $task_title = $_POST['topic'];
+        $member_username = $_POST['writer']; // This is the username from users table
+        $deadline = $_POST['deadline'];
+        $priority = $_POST['priority'];
+        $status = $_POST['status'];
+        $task_details = $_POST['notes'];
+        $links = $_POST['links'];
+        
+        // Verify the user being assigned belongs to the same organization
+        $verify_sql = "SELECT username FROM users WHERE username = ? AND org_id = ?";
+        $verify_stmt = $conn->prepare($verify_sql);
+        $verify_stmt->bind_param("si", $member_username, $_SESSION['org_id']);
+        $verify_stmt->execute();
+        $verify_result = $verify_stmt->get_result();
+        
+        if ($verify_result->num_rows === 1) {
+            // User belongs to same org, proceed with task assignment
+            $sql = "INSERT INTO tasks (task_title, member_id, deadline, priority, status, task_details, link) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("sssssss", $task_title, $member_username, $deadline, $priority, $status, $task_details, $links);
+            
+            if ($stmt->execute()) {
+                echo "<script>showNotification('Task assigned successfully!', 'success');</script>";
+            } else {
+                echo "<script>showNotification('Error assigning task: " . addslashes($conn->error) . "', 'error');</script>";
+            }
+            $stmt->close();
+        } else {
+            echo "<script>showNotification('Error: Cannot assign task to user outside your organization', 'error');</script>";
+        }
+        $verify_stmt->close();
+    }
+    
+    // Fetch users for dropdown (only from the same organization)
+    $users = [];
+    $sql = "SELECT username, name, department FROM users WHERE org_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $_SESSION['org_id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        $users[] = $row;
+    }
+    $stmt->close();
 ?>
 <!DOCTYPE html>
 <html>
@@ -30,6 +71,35 @@ if (isset($_SESSION["MemberID"]) && isset($_SESSION["name"])) {
                     }
                 }
             }
+            
+            function showNotification(message, type) {
+                const notification = document.createElement('div');
+                notification.className = `fixed top-20 right-4 px-6 py-3 rounded-md shadow-lg text-white ${
+                    type === 'success' ? 'bg-green-500' : 'bg-red-500'
+                }`;
+                notification.textContent = message;
+                document.body.appendChild(notification);
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            }
+
+            // Automatically set department when user is selected
+            document.addEventListener('DOMContentLoaded', function() {
+                const userSelect = document.getElementById('writer');
+                const departmentSelect = document.getElementById('section');
+                const users = <?php echo json_encode($users); ?>;
+                
+                userSelect.addEventListener('change', function() {
+                    const selectedUser = this.value;
+                    const user = users.find(u => u.username === selectedUser);
+                    if (user) {
+                        departmentSelect.value = user.department;
+                        // Make department field read-only after auto-setting
+                        departmentSelect.readOnly = true;
+                    }
+                });
+            });
         </script>
     </head>
 
@@ -38,65 +108,7 @@ if (isset($_SESSION["MemberID"]) && isset($_SESSION["name"])) {
         <nav class="bg-gradient-to-r from-bedan-red to-bedan-red-light fixed w-full top-0 z-50 shadow-lg">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-16">
-                    <div class="flex-shrink-0">
-                        <a href="Home2.php">
-                            <img class="h-12 w-auto" src="The Bedan Herald.png" alt="Logo">
-                        </a>
-                    </div>
-                    <div class="hidden md:block">
-                        <div class="ml-10 flex items-center space-x-4">
-                            <?php if ($_SESSION["position"] == 'Section Editor' || $_SESSION["position"] == 'Head Admin' || $_SESSION["position"] == 'Admin'){ ?>
-                                <a href="Home2.php" class="text-white hover:bg-white/20 px-3 py-2 rounded-md text-sm font-medium transition-all">
-                                    <i class="fas fa-home mr-2"></i>Assignments
-                                </a>
-                                <a href="AssignTasks.php" class="text-white bg-white/20 px-3 py-2 rounded-md text-sm font-medium transition-all">
-                                    <i class="fas fa-tasks mr-2"></i>Assign Tasks
-                                </a>
-                                <a href="OverallTasks.php" class="text-white hover:bg-white/20 px-3 py-2 rounded-md text-sm font-medium transition-all">
-                                    <i class="fas fa-chart-line mr-2"></i>Progress Overview
-                                </a>
-                            <?php } 
-                            if ($_SESSION["position"] == 'Head Admin' || $_SESSION["position"] == 'Human Resources'){ ?>
-                                <a href="AddAccount.php" class="text-white hover:bg-white/20 px-3 py-2 rounded-md text-sm font-medium transition-all">
-                                    <i class="fas fa-user-plus mr-2"></i>Create Accounts
-                                </a>
-                            <?php } ?>
-                            
-                            <!-- Notification Button -->
-                            <div class="relative">
-                                <button id="notificationButton" class="text-white hover:bg-white/20 px-3 py-2 rounded-md text-sm font-medium transition-all">
-                                    <i class="fas fa-bell mr-2"></i>Notifications
-                                    <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
-                                </button>
-                                <div id="notificationDropdown" class="hidden absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg z-50">
-                                    <div class="p-3 border-b border-gray-200">
-                                        <h3 class="text-lg font-medium text-gray-800">Notifications</h3>
-                                    </div>
-                                    <div class="max-h-64 overflow-y-auto">
-                                        <a href="#" class="block p-4 border-b border-gray-200 hover:bg-gray-50">
-                                            <p class="text-sm font-medium text-gray-800">New article assigned</p>
-                                            <p class="text-xs text-gray-500">10 minutes ago</p>
-                                        </a>
-                                        <a href="#" class="block p-4 border-b border-gray-200 hover:bg-gray-50">
-                                            <p class="text-sm font-medium text-gray-800">Your article has been reviewed</p>
-                                            <p class="text-xs text-gray-500">2 hours ago</p>
-                                        </a>
-                                        <a href="#" class="block p-4 border-b border-gray-200 hover:bg-gray-50">
-                                            <p class="text-sm font-medium text-gray-800">Team meeting reminder</p>
-                                            <p class="text-xs text-gray-500">1 day ago</p>
-                                        </a>
-                                    </div>
-                                    <div class="p-2 text-center border-t border-gray-200">
-                                        <a href="#" class="text-sm text-bedan-red hover:underline">View all notifications</a>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <a href="LogOut.php" class="text-white bg-red-700 hover:bg-red-800 px-4 py-2 rounded-md text-sm font-medium transition-all">
-                                <i class="fas fa-sign-out-alt mr-2"></i>Logout
-                            </a>
-                        </div>
-                    </div>
+                    <?php include "tabs.php"; ?>
                 </div>
             </div>
         </nav>
@@ -111,54 +123,62 @@ if (isset($_SESSION["MemberID"]) && isset($_SESSION["name"])) {
 
             <!-- Assignment Form -->
             <div class="bg-white rounded-lg shadow-md p-6">
-                <form action="#" method="post" class="space-y-6">
+                <form action="assigntasks.php" method="post" class="space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Article Topic -->
+                        <!-- Task Title -->
                         <div>
-                            <label for="topic" class="block text-sm font-medium text-gray-700">Article Topic</label>
-                            <input type="text" name="topic" id="topic" 
+                            <label for="topic" class="block text-sm font-medium text-gray-700">Task Title</label>
+                            <input type="text" name="topic" id="topic" required
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-bedan-red focus:ring-bedan-red sm:text-sm"
-                                placeholder="Enter article topic">
+                                placeholder="Enter task title">
                         </div>
 
-                        <!-- Section -->
+                        <!-- Department (auto-filled based on user selection) -->
                         <div>
-                            <label for="section" class="block text-sm font-medium text-gray-700">Section</label>
-                            <select name="section" id="section" 
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-bedan-red focus:ring-bedan-red sm:text-sm">
-                                <option value="">Select section</option>
-                                <option value="News">News</option>
-                                <option value="Features">Features</option>
-                                <option value="Sports">Sports</option>
-                                <option value="Editorial">Editorial</option>
+                            <label for="section" class="block text-sm font-medium text-gray-700">Department</label>
+                            <select name="section" id="section" required
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-bedan-red focus:ring-bedan-red sm:text-sm bg-gray-100"
+                                readonly>
+                                <option value="">Select team member first</option>
+                                <?php
+                                // Get unique departments from users
+                                $departments = array_unique(array_column($users, 'department'));
+                                foreach ($departments as $dept) {
+                                    echo "<option value=\"$dept\">$dept</option>";
+                                }
+                                ?>
                             </select>
                         </div>
 
                         <!-- Assign To -->
                         <div>
                             <label for="writer" class="block text-sm font-medium text-gray-700">Assign To</label>
-                            <select name="writer" id="writer" 
+                            <select name="writer" id="writer" required
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-bedan-red focus:ring-bedan-red sm:text-sm">
-                                <option value="">Select writer</option>
-                                <option value="1">John Doe</option>
-                                <option value="2">Jane Smith</option>
-                                <option value="3">Mike Johnson</option>
+                                <option value="">Select team member</option>
+                                <?php foreach ($users as $user): ?>
+                                    <option value="<?= htmlspecialchars($user['username']) ?>" data-department="<?= htmlspecialchars($user['department']) ?>">
+                                        <?= htmlspecialchars($user['name']) ?> (<?= htmlspecialchars($user['department']) ?>)
+                                    </option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
 
                         <!-- Deadline -->
                         <div>
                             <label for="deadline" class="block text-sm font-medium text-gray-700">Deadline</label>
-                            <input type="date" name="deadline" id="deadline" 
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-bedan-red focus:ring-bedan-red sm:text-sm">
+                            <input type="date" name="deadline" id="deadline" required
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-bedan-red focus:ring-bedan-red sm:text-sm"
+                                min="<?= date('Y-m-d') ?>">
                         </div>
 
                         <!-- Priority -->
                         <div>
                             <label for="priority" class="block text-sm font-medium text-gray-700">Priority</label>
-                            <select name="priority" id="priority" 
+                            <select name="priority" id="priority" required
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-bedan-red focus:ring-bedan-red sm:text-sm">
-                                <option value="Normal">Normal</option>
+                                <option value="Low">Low</option>
+                                <option value="Normal" selected>Normal</option>
                                 <option value="Medium">Medium</option>
                                 <option value="High">High</option>
                             </select>
@@ -167,21 +187,29 @@ if (isset($_SESSION["MemberID"]) && isset($_SESSION["name"])) {
                         <!-- Status -->
                         <div>
                             <label for="status" class="block text-sm font-medium text-gray-700">Initial Status</label>
-                            <select name="status" id="status" 
+                            <select name="status" id="status" required
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-bedan-red focus:ring-bedan-red sm:text-sm">
-                                <option value="Not Started">Not Started</option>
+                                <option value="Not Started" selected>Not Started</option>
                                 <option value="In Progress">In Progress</option>
                                 <option value="Pending Review">Pending Review</option>
                             </select>
                         </div>
                     </div>
 
-                    <!-- Notes -->
+                    <!-- Task Details -->
                     <div>
-                        <label for="notes" class="block text-sm font-medium text-gray-700">Notes</label>
-                        <textarea name="notes" id="notes" rows="4" 
+                        <label for="notes" class="block text-sm font-medium text-gray-700">Task Description</label>
+                        <textarea name="notes" id="notes" rows="4" required
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-bedan-red focus:ring-bedan-red sm:text-sm"
-                            placeholder="Enter any additional notes or instructions"></textarea>
+                            placeholder="Enter task details"></textarea>
+                    </div>
+
+                    <!-- Task Links -->
+                    <div>
+                        <label for="links" class="block text-sm font-medium text-gray-700">Task Links</label>
+                        <textarea name="links" id="links" rows="2"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-bedan-red focus:ring-bedan-red sm:text-sm"
+                            placeholder="Include relevant links"></textarea>
                     </div>
 
                     <!-- Submit Button -->
@@ -201,7 +229,6 @@ if (isset($_SESSION["MemberID"]) && isset($_SESSION["name"])) {
                 &copy; All rights reserved.
             </div>
         </footer>
-        <script src="notifications.js"></script>
     </body>
 </html>
 <?php
