@@ -33,13 +33,14 @@
     </style>
 </head>
 <body class="bg-gray-100 login-bg min-h-screen flex items-center justify-center">
-    <div class="w-full max-w-4xl mx-auto p-6">
+    <div class="w-full max-w-7xl mx-auto p-6">
         <div class="flex flex-col md:flex-row rounded-xl shadow-2xl overflow-hidden">
             <!-- Left side - Brand/Logo Section -->
-            <div class="bg-gradient-to-br from-bedan-red to-bedan-red-light w-full md:w-5/12 p-8 text-white flex flex-col justify-between">
+            <div class="bg-gradient-to-br from-bedan-red to-bedan-red-light w-full md:w-6/12 p-8 text-white flex flex-col justify-between">
                 <div>
-                    <img src="TBHLogo.png" alt="Logo" class="h-24 mx-auto mb-8">
-                    <h1 class="text-3xl font-bold text-center mb-4">The Bedan Herald</h1>
+                    <img src="imgs/logo.png" alt="Logo" class="h-auto mx-auto mb-8">
+                    <h1 class="text-3xl font-bold text-center mb-4">San Beda College Alabang</h1>
+                    <h1 class="text-2xl font-bold text-center mb-4">Organizational Management System</h1>
                     <p class="text-lg text-center opacity-80 mb-8">San Beda University's Official Student Publication</p>
                 </div>
                 <div class="space-y-6">
@@ -47,14 +48,14 @@
                          "Student-led journalism..." and "Writing the history..." -->
                 </div>
                 <div class="text-center text-sm opacity-70 mt-8">
-                    &copy; <?php echo date("Y"); ?> The Bedan Herald. All Rights Reserved.
+                    &copy; <?php echo date("Y"); ?> Bedan Information Technology Society. All Rights Reserved.
                 </div>
             </div>
             
             <!-- Right side - Login Form -->
-            <div class="w-full md:w-7/12 glass-effect p-8 md:p-12">
-                <div class="text-center mb-10">
-                    <img src="The Bedan Herald.png" alt="The Bedan Herald" class="h-16 mx-auto mb-6">
+            <div class="w-full md:w-6/12 glass-effect p-8 md:p-12">
+                <div class="text-center mb-10 mt-10">
+                    <div class="mt-10"></div>
                     <h2 class="text-2xl font-bold text-gray-800">Welcome Back</h2>
                     <p class="text-gray-600">Please login to your account</p>
                 </div>
@@ -68,7 +69,7 @@
                 
                 <form action="LogProc.php" method="post" class="space-y-6">
                     <div>
-                        <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                        <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Student Number</label>
                         <div class="relative">
                             <input type="text" id="username" name="username" 
                                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-bedan-red focus:ring-bedan-red sm:text-sm h-12" 
