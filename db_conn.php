@@ -1,14 +1,5 @@
 <?php
-
-$servername = "localhost";
-	$username = "heraldmember";
-	$password = "ctkXb2cVpsQjbjR";
-	$dbname = "i8258503_wp1";
-
-	// Create connection
-	$conn = mysqli_connect($servername, $username, $password, $dbname);
-
-	// Check connection
-	if (!$conn) {
-	  die("Connection failed: " . mysqli_connect_error());
-	} 
+// Database connection disabled for local testing
+error_reporting(0);
+$conn = null;
+error_reporting(E_ALL); 
