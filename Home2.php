@@ -2,15 +2,8 @@
 session_start();
 include "db_conn.php";  // $conn will be null
 
-// For testing, if no session exists, create a mock session
-if (!isset($_SESSION["MemberID"])) {
-    $_SESSION['username'] = "admin";
-    $_SESSION['name'] = "Admin User";
-    $_SESSION['MemberID'] = "001";
-    $_SESSION['position'] = "Head Admin";
-}
-
-if (isset($_SESSION["MemberID"]) && isset($_SESSION["name"])) { 
+ 
+if (isset($_SESSION["username"]) && isset($_SESSION["org_id"])) { 
 ?>
 <!DOCTYPE html>
 <html>
@@ -45,7 +38,7 @@ if (isset($_SESSION["MemberID"]) && isset($_SESSION["name"])) {
                     </div>
                     <div class="hidden md:block">
                         <div class="ml-10 flex items-center space-x-4">
-                            <?php if ($_SESSION["position"] == 'Section Editor' || $_SESSION["position"] == 'Head Admin' || $_SESSION["position"] == 'Admin'){ ?>
+                            <?php if ($_SESSION["position"] == 'President' || $_SESSION["position"] == 'Head Admin' || $_SESSION["position"] == 'Admin'){ ?>
                                 <a href="Home2.php" class="text-white bg-white/20 px-3 py-2 rounded-md text-sm font-medium transition-all">
                                     <i class="fas fa-home mr-2"></i>Assignments
                                 </a>

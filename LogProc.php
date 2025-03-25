@@ -23,33 +23,28 @@ if(isset($_POST['username']) && isset($_POST['password'])){
     }
 
     if ($conn) {
-        // Original database check
-        $sql = "SELECT * FROM Members WHERE UserID='$username' AND Password='$pass'";
-        $result = mysqli_query($conn, $sql);
+        $stmt = $conn->prepare("SELECT * FROM users WHERE username = ? AND password = ?");
+        $stmt->bind_param("ss", $username, $pass);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-        if (mysqli_num_rows($result) === 1){
-            $row = mysqli_fetch_array($result);
-            if($row['UserID'] === $username && $row['Password'] === $pass){
-                $_SESSION['username'] = $row['UserID'];
-                $_SESSION['name'] = $row['Name'];
-                $_SESSION['MemberID'] = $row['MemberID'];
-                $_SESSION['position'] = $row['Position'];
-                header("Location: Home2.php");
-                exit();
-            }
-        }
-    } else {
-        // Fallback for when database is not available
-        if($username == "admin" && $pass == "admin") {
-            $_SESSION['username'] = "admin";
-            $_SESSION['name'] = "Admin User";
-            $_SESSION['MemberID'] = "001";
-            $_SESSION['position'] = "Head Admin";
+        if ($result->num_rows === 1) {
+            $row = $result->fetch_assoc();
+            // Store user data in session
+            $_SESSION['username'] = $row['username'];
+            $_SESSION['name'] = $row['name'];
+            $_SESSION['org_id'] = $row['org_id'];
+            $_SESSION['position'] = $row['position'];
+            $_SESSION['department'] = $row['department'];
+            
             header("Location: Home2.php");
             exit();
+        } else {
+            header("Location: Login.php?error=Incorrect Username or Password");
+            exit();
         }
+    } else {
+        header("Location: Login.php?error=Database connection failed");
+        exit();
     }
-    
-    header("Location: Login.php?error=Incorrect Username or Password");
-    exit();
 }
