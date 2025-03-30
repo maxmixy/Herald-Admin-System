@@ -12,7 +12,7 @@ if (isset($_SESSION["username"]) && isset($_SESSION["org_id"])) {
     
     // Add filters if they exist
     $params = [$_SESSION['org_id']];
-    $types = "i";
+    $types = "s";
     
     if (isset($_GET['department']) && $_GET['department'] != '') {
         $sql .= " AND u.department = ?";
@@ -79,7 +79,7 @@ if (isset($_SESSION["username"]) && isset($_SESSION["org_id"])) {
     <body class="bg-gray-50 min-h-screen">
         <!-- Header Navigation -->
         <nav class="bg-gradient-to-r from-bedan-red to-bedan-red-light fixed w-full top-0 z-50 shadow-lg">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-2x3 mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-16">
                     <?php include "tabs.php"; ?>
                 </div>
@@ -107,7 +107,7 @@ if (isset($_SESSION["username"]) && isset($_SESSION["org_id"])) {
                                 <?php
                                 // Get unique departments from users
                                 $deptStmt = $conn->prepare("SELECT DISTINCT department FROM users WHERE org_id = ?");
-                                $deptStmt->bind_param("i", $_SESSION['org_id']);
+                                $deptStmt->bind_param("s", $_SESSION['org_id']);
                                 $deptStmt->execute();
                                 $deptResult = $deptStmt->get_result();
                                 

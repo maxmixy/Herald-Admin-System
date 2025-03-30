@@ -35,67 +35,9 @@ if (isset($_SESSION["MemberID"]) && isset($_SESSION["name"])) {
     <body class="bg-gray-50 min-h-screen">
         <!-- Header Navigation -->
         <nav class="bg-gradient-to-r from-bedan-red to-bedan-red-light fixed w-full top-0 z-50 shadow-lg">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-2x3 mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-16">
-                    <div class="flex-shrink-0">
-                        <a href="Home2.php">
-                            <img class="h-12 w-auto" src="The Bedan Herald.png" alt="Logo">
-                        </a>
-                    </div>
-                    <div class="hidden md:block">
-                        <div class="ml-10 flex items-center space-x-4">
-                            <?php if ($_SESSION["position"] == 'Section Editor' || $_SESSION["position"] == 'Head Admin' || $_SESSION["position"] == 'Admin'){ ?>
-                                <a href="Home2.php" class="text-white hover:bg-white/20 px-3 py-2 rounded-md text-sm font-medium transition-all">
-                                    <i class="fas fa-home mr-2"></i>Assignments
-                                </a>
-                                <a href="AssignTasks.php" class="text-white hover:bg-white/20 px-3 py-2 rounded-md text-sm font-medium transition-all">
-                                    <i class="fas fa-tasks mr-2"></i>Assign Tasks
-                                </a>
-                                <a href="OverallTasks.php" class="text-white hover:bg-white/20 px-3 py-2 rounded-md text-sm font-medium transition-all">
-                                    <i class="fas fa-chart-line mr-2"></i>Progress Overview
-                                </a>
-                            <?php } 
-                            if ($_SESSION["position"] == 'Head Admin' || $_SESSION["position"] == 'Human Resources'){ ?>
-                                <a href="AddAccount.php" class="text-white bg-white/20 px-3 py-2 rounded-md text-sm font-medium transition-all">
-                                    <i class="fas fa-user-plus mr-2"></i>Create Accounts
-                                </a>
-                            <?php } ?>
-                            
-                            <!-- Notification Button -->
-                            <div class="relative">
-                                <button id="notificationButton" class="text-white hover:bg-white/20 px-3 py-2 rounded-md text-sm font-medium transition-all">
-                                    <i class="fas fa-bell mr-2"></i>Notifications
-                                    <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
-                                </button>
-                                <div id="notificationDropdown" class="hidden absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg z-50">
-                                    <div class="p-3 border-b border-gray-200">
-                                        <h3 class="text-lg font-medium text-gray-800">Notifications</h3>
-                                    </div>
-                                    <div class="max-h-64 overflow-y-auto">
-                                        <a href="#" class="block p-4 border-b border-gray-200 hover:bg-gray-50">
-                                            <p class="text-sm font-medium text-gray-800">New article assigned</p>
-                                            <p class="text-xs text-gray-500">10 minutes ago</p>
-                                        </a>
-                                        <a href="#" class="block p-4 border-b border-gray-200 hover:bg-gray-50">
-                                            <p class="text-sm font-medium text-gray-800">Your article has been reviewed</p>
-                                            <p class="text-xs text-gray-500">2 hours ago</p>
-                                        </a>
-                                        <a href="#" class="block p-4 border-b border-gray-200 hover:bg-gray-50">
-                                            <p class="text-sm font-medium text-gray-800">Team meeting reminder</p>
-                                            <p class="text-xs text-gray-500">1 day ago</p>
-                                        </a>
-                                    </div>
-                                    <div class="p-2 text-center border-t border-gray-200">
-                                        <a href="#" class="text-sm text-bedan-red hover:underline">View all notifications</a>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <a href="LogOut.php" class="text-white bg-red-700 hover:bg-red-800 px-4 py-2 rounded-md text-sm font-medium transition-all">
-                                <i class="fas fa-sign-out-alt mr-2"></i>Logout
-                            </a>
-                        </div>
-                    </div>
+                    <?php include "tabs.php"; ?>
                 </div>
             </div>
         </nav>

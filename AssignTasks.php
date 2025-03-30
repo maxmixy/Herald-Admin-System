@@ -106,8 +106,8 @@ if (isset($_SESSION["username"]) && isset($_SESSION["org_id"])) {
     <body class="bg-gray-50 min-h-screen">
         <!-- Header Navigation -->
         <nav class="bg-gradient-to-r from-bedan-red to-bedan-red-light fixed w-full top-0 z-50 shadow-lg">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-16">
+            <div class="max-w-5x7 mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16"> 
                     <?php include "tabs.php"; ?>
                 </div>
             </div>

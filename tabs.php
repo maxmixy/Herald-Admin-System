@@ -1,48 +1,57 @@
 <div class="flex-shrink-0">
-                        <a href="Home2.php">
-                            <div class="grid grid-cols-7 align-bottom">
-                                <img class="h-12 w-auto" src="imgs/logo.png" alt="Logo"> 
-                                <h1 class="col-span-6 align-middle text-white text-xl font-bold">SBCA Organizational Management System</h1>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="hidden md:block">
+    <a href="Home2.php">
+        <div class="flex items-center">
+            <img class="h-12 w-auto" src="imgs/logo.png" alt="Logo"> 
+            <h1 class="ml-3 text-white text-xl font-bold">SBCA Organizational Management System</h1>
+        </div>
+    </a>
+</div>
+<div class="hidden md:block">
     <div class="ml-10 flex items-center space-x-2">
-        <a href="Home2.php" class="text-white bg-white/20 px-3 py-2 rounded-md text-sm font-medium transition-all">
-            <div class="grid grid-cols-4">
-                <i class="fas fa-home mr-2"></i>
-                <div class="col-span-3"> Assignments </div>
+        <?php 
+        // Get current page filename
+        $current_page = basename($_SERVER['PHP_SELF']);
+        ?>
+        
+        <a href="Home2.php" class="text-white <?php echo ($current_page == 'Home2.php') ? 'bg-white/20' : 'hover:bg-white/20'; ?> px-3 py-2 rounded-md text-sm font-medium transition-all">
+            <div class="flex items-center">
+                <i class="fas fa-home w-5 text-center"></i>
+                <span class="ml-2">Assignments</span>
             </div>
         </a>
         <?php if ($_SESSION["position"] == 'President' || $_SESSION["position"] == 'Head Admin' || $_SESSION["position"] == 'OSA'){ ?>
             
-            <a href="AssignTasks.php" class="col-span-3 text-white hover:bg-white/20 px-3 py-2 rounded-md text-sm font-medium transition-all">
-                <div class="grid grid-cols-4">
-                    <i class="fas fa-tasks mr-2"></i>
-                    <div class="col-span-3"> Assign Tasks </div>
+            <a href="AssignTasks.php" class="text-white <?php echo ($current_page == 'AssignTasks.php') ? 'bg-white/20' : 'hover:bg-white/20'; ?> px-3 py-2 rounded-md text-sm font-medium transition-all">
+                <div class="flex items-center">
+                    <i class="fas fa-tasks w-5 text-center"></i>
+                    <span class="ml-2">Assign Tasks</span>
                 </div>
             </a>
             
-            <a href="OverallTasks.php" class="text-white hover:bg-white/20 px-2 py-2 rounded-md text-sm font-medium transition-all">
-                <div class="grid grid-cols-4">
-                <i class="fas fa-chart-line mr-2"></i>
-                <div class="col-span-3"> Progress Overview </div>
+            <a href="OverallTasks.php" class="text-white <?php echo ($current_page == 'OverallTasks.php') ? 'bg-white/20' : 'hover:bg-white/20'; ?> px-2 py-2 rounded-md text-sm font-medium transition-all">
+                <div class="flex items-center">
+                    <i class="fas fa-chart-line w-5 text-center"></i>
+                    <span class="ml-2">Progress Overview</span>
                 </div>
             </a>
-            <a href="AddAccount.php" class="text-white hover:bg-white/20 px-3 py-2 rounded-md text-sm font-medium transition-all">
-                <div class="grid grid-cols-4">
-                    <i class="fas fa-user-plus mr-2"></i>
-                    <div class="col-span-3"> Create Accounts </div>
+            <a href="AddAccount.php" class="text-white <?php echo ($current_page == 'AddAccount.php') ? 'bg-white/20' : 'hover:bg-white/20'; ?> px-3 py-2 rounded-md text-sm font-medium transition-all">
+                <div class="flex items-center">
+                    <i class="fas fa-user-plus w-5 text-center"></i>
+                    <span class="ml-2">Create Accounts</span>
                 </div>
-                
             </a>
         <?php } ?>
         
         <!-- Notification Button -->
         <div class="relative">
             <button id="notificationButton" class="text-white hover:bg-white/20 px-3 py-2 rounded-md text-sm font-medium transition-all">
-                <i class="fas fa-bell mr-2"></i>Notifications
-                <span class="absolute top-1 right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                <div class="flex items-center">
+                    <div class="relative">
+                        <i class="fas fa-bell w-5 text-center"></i>
+                        <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                    </div>
+                    <span class="ml-2">Notifications</span>
+                </div>
             </button>
             <div id="notificationDropdown" class="hidden absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg z-50">
                 <div class="p-3 border-b border-gray-200">
@@ -69,7 +78,10 @@
         </div>
         
         <a href="LogOut.php" class="text-white bg-red-700 hover:bg-red-800 px-4 py-2 rounded-md text-sm font-medium transition-all">
-            <i class="fas fa-sign-out-alt mr-2"></i>Logout
+            <div class="flex items-center">
+                <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                <span class="ml-2">Logout</span>
+            </div>
         </a>
     </div>
 </div>
