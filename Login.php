@@ -41,7 +41,7 @@
                     <img src="imgs/logo.png" alt="Logo" class="h-auto mx-auto mb-8">
                     <h1 class="text-3xl font-bold text-center mb-4">San Beda College Alabang</h1>
                     <h1 class="text-2xl font-bold text-center mb-4">Organizational Management System</h1>
-                    <p class="text-lg text-center opacity-80 mb-8">San Beda University's Official Student Publication</p>
+                    <p class="text-lg text-center opacity-80 mb-8">College</p>
                 </div>
                 <div class="space-y-6">
                     <!-- Removed the three sections with text about "Delivering truth...", 
