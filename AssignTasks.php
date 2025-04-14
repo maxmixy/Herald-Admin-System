@@ -2,50 +2,46 @@
 ob_start();
 session_start();
 include "db_conn.php";
+include_once "notifications.php";
 
 if (isset($_SESSION["username"]) && isset($_SESSION["org_id"])) { 
     // Process form submission
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Get form data
-        $task_title = $_POST['topic'];
-        $member_username = $_POST['writer']; // This is the username from users table
-        $deadline = $_POST['deadline'];
-        $priority = $_POST['priority'];
-        $status = $_POST['status'];
-        $task_details = $_POST['notes'];
-        $links = $_POST['links'];
+        $task_title = isset($_POST["topic"]) ? trim($_POST["topic"]) : '';
+        $member_id = isset($_POST["writer"]) ? trim($_POST["writer"]) : '';
+        $deadline = isset($_POST["deadline"]) ? trim($_POST["deadline"]) : '';
+        $priority = isset($_POST["priority"]) ? trim($_POST["priority"]) : '';
+        $status = isset($_POST["status"]) ? trim($_POST["status"]) : 'Not Started';
+        $task_details = isset($_POST["notes"]) ? trim($_POST["notes"]) : '';
+        $link = isset($_POST["links"]) ? trim($_POST["links"]) : '';
         
-        // Verify the user being assigned belongs to the same organization
-        $verify_sql = "SELECT username FROM users WHERE username = ? AND org_id = ?";
-        $verify_stmt = $conn->prepare($verify_sql);
-        $verify_stmt->bind_param("si", $member_username, $_SESSION['org_id']);
-        $verify_stmt->execute();
-        $verify_result = $verify_stmt->get_result();
-        
-        if ($verify_result->num_rows === 1) {
-            // User belongs to same org, proceed with task assignment
-            $sql = "INSERT INTO tasks (task_title, member_id, deadline, priority, status, task_details, link) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?)";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("sssssss", $task_title, $member_username, $deadline, $priority, $status, $task_details, $links);
-            
-            if ($stmt->execute()) {
-                echo "<script>showNotification('Task assigned successfully!', 'success');</script>";
-            } else {
-                echo "<script>showNotification('Error assigning task: " . addslashes($conn->error) . "', 'error');</script>";
-            }
-            $stmt->close();
+        if (empty($task_title) || empty($member_id) || empty($deadline) || empty($priority)) {
+            $error = "All fields are required";
         } else {
-            echo "<script>showNotification('Error: Cannot assign task to user outside your organization', 'error');</script>";
+            $sql = "INSERT INTO tasks (task_title, member_id, deadline, priority, status, task_details, link) 
+                   VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $stmt = mysqli_prepare($conn, $sql);
+            mysqli_stmt_bind_param($stmt, "sssssss", $task_title, $member_id, $deadline, $priority, $status, $task_details, $link);
+            
+            if (mysqli_stmt_execute($stmt)) {
+                // Create notification for the assigned user
+                $message = "New task assigned: " . $task_title;
+                createNotification($conn, $member_id, $_SESSION['org_id'], $message, 'task', mysqli_insert_id($conn));
+                
+                $_SESSION['success'] = "Task assigned successfully!";
+                header("Location: Home2.php");
+                exit();
+            } else {
+                $error = "Error assigning task: " . mysqli_error($conn);
+            }
         }
-        $verify_stmt->close();
     }
     
     // Fetch users for dropdown (only from the same organization)
     $users = [];
     $sql = "SELECT username, name, department FROM users WHERE org_id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $_SESSION['org_id']);
+    $stmt->bind_param("s", $_SESSION['org_id']);
     $stmt->execute();
     $result = $stmt->get_result();
     while ($row = $result->fetch_assoc()) {
@@ -229,6 +225,7 @@ if (isset($_SESSION["username"]) && isset($_SESSION["org_id"])) {
                 &copy; All rights reserved.
             </div>
         </footer>
+        <script src="notifications.js"></script>
     </body>
 </html>
 <?php

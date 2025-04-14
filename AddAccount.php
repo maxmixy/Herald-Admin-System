@@ -2,14 +2,14 @@
 session_start();
 include "db_conn.php";
 
-if (!isset($_SESSION["MemberID"])) {
-    $_SESSION['username'] = "admin";
-    $_SESSION['name'] = "Admin User";
-    $_SESSION['MemberID'] = "001";
-    $_SESSION['position'] = "Head Admin";
+// Check if user is logged in and has permission to access this page
+if (!isset($_SESSION["username"]) || !isset($_SESSION["org_id"]) || 
+    ($_SESSION["position"] != "President" && $_SESSION["position"] != "Head Admin" && $_SESSION["position"] != "OSA")) {
+    header("Location: Login.php");
+    exit();
 }
 
-if (isset($_SESSION["MemberID"]) && isset($_SESSION["name"])) { 
+// Continue with page content
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -123,39 +123,40 @@ if (isset($_SESSION["MemberID"]) && isset($_SESSION["name"])) {
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Position</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created Date</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             <?php
-                            // Mock data for recent accounts
-                            $recentAccounts = [
-                                [
-                                    'name' => 'John Smith',
-                                    'position' => 'Writer',
-                                    'username' => 'jsmith',
-                                    'created' => '2024-03-15'
-                                ],
-                                [
-                                    'name' => 'Maria Garcia',
-                                    'position' => 'Section Editor',
-                                    'username' => 'mgarcia',
-                                    'created' => '2024-03-14'
-                                ]
-                            ];
-
-                            foreach ($recentAccounts as $account) {
-                                echo "<tr class='hover:bg-gray-50'>";
-                                echo "<td class='px-6 py-4 whitespace-nowrap text-sm text-gray-900'>{$account['name']}</td>";
-                                echo "<td class='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>{$account['position']}</td>";
-                                echo "<td class='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>{$account['username']}</td>";
-                                echo "<td class='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>{$account['created']}</td>";
-                                echo "<td class='px-6 py-4 whitespace-nowrap text-sm font-medium'>
-                                        <button class='text-blue-600 hover:text-blue-900 mr-2'><i class='fas fa-edit'></i></button>
-                                        <button class='text-red-600 hover:text-red-900'><i class='fas fa-trash'></i></button>
-                                    </td>";
-                                echo "</tr>";
+                            // Get recently created accounts from the database (last 7 days)
+                            $recentAccountsQuery = "SELECT username, name, position, department, created_at
+                                                   FROM users 
+                                                   WHERE org_id = ? 
+                                                   ORDER BY created_at DESC 
+                                                   LIMIT 10";
+                            $recentStmt = $conn->prepare($recentAccountsQuery);
+                            $recentStmt->bind_param("s", $_SESSION['org_id']);
+                            $recentStmt->execute();
+                            $recentResult = $recentStmt->get_result();
+                            
+                            if ($recentResult->num_rows > 0) {
+                                while ($account = $recentResult->fetch_assoc()) {
+                                    echo "<tr class='hover:bg-gray-50'>";
+                                    echo "<td class='px-6 py-4 whitespace-nowrap text-sm text-gray-900'>" . htmlspecialchars($account['name']) . "</td>";
+                                    echo "<td class='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>" . htmlspecialchars($account['position']) . "</td>";
+                                    echo "<td class='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>" . htmlspecialchars($account['username']) . "</td>";
+                                    echo "<td class='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>" . htmlspecialchars($account['department']) . "</td>";
+                                    echo "<td class='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>" . ($account['created_at'] ? date('M d, Y', strtotime($account['created_at'])) : 'N/A') . "</td>";
+                                    echo "<td class='px-6 py-4 whitespace-nowrap text-sm font-medium'>
+                                            <a href='edit_account.php?username=" . htmlspecialchars($account['username']) . "' class='text-blue-600 hover:text-blue-900 mr-2'><i class='fas fa-edit'></i></a>
+                                            <a href='delete_account.php?username=" . htmlspecialchars($account['username']) . "' class='text-red-600 hover:text-red-900' onclick=\"return confirm('Are you sure you want to delete this account?')\"><i class='fas fa-trash'></i></a>
+                                        </td>";
+                                    echo "</tr>";
+                                }
+                            } else {
+                                echo "<tr><td colspan='6' class='px-6 py-4 text-center text-gray-500'>No accounts found</td></tr>";
                             }
                             ?>
                         </tbody>
@@ -173,9 +174,3 @@ if (isset($_SESSION["MemberID"]) && isset($_SESSION["name"])) {
         <script src="notifications.js"></script>
     </body>
 </html>
-<?php
-} else {  
-    header("Location: Login.php");
-    exit();
-}
-?>

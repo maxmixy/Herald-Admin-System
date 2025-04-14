@@ -110,7 +110,7 @@ if (isset($_SESSION["username"]) && isset($_SESSION["org_id"])) {
                         <i class="fas fa-bullhorn mr-2 text-bedan-red"></i>Announcements
                     </h2>
                     <?php if ($_SESSION['position'] == 'President'): ?>
-                    <a href="#" class="bg-bedan-red hover:bg-bedan-red-light text-white px-4 py-2 rounded-md text-sm font-medium transition-all">
+                    <a href="add_announcement.php" class="bg-bedan-red hover:bg-bedan-red-light text-white px-4 py-2 rounded-md text-sm font-medium transition-all">
                         <i class="fas fa-plus mr-2"></i>New Announcement
                     </a>
                     <?php endif; ?>
@@ -118,67 +118,62 @@ if (isset($_SESSION["username"]) && isset($_SESSION["org_id"])) {
                 
                 <!-- Scrollable Announcements Container -->
                 <div class="space-y-4 overflow-y-auto pr-2" style="max-height: 320px; scrollbar-width: thin;">
-                    <!-- Example Announcements - These could be loaded from a database -->
-                    <div class="bg-gradient-to-r from-bedan-red/10 to-transparent p-4 rounded-lg border-l-4 border-bedan-red">
-                        <div class="flex justify-between">
-                            <h3 class="font-semibold text-lg text-gray-800">End of Semester Deadline</h3>
-                            <span class="text-sm text-gray-500">2 days ago</span>
-                        </div>
-                        <p class="text-gray-600 mt-2">All remaining assignments must be completed by May 30th. Please make sure to submit your work on time.</p>
-                        <div class="flex items-center justify-between mt-3">
-                            <span class="text-sm text-gray-500">Posted by: Admin</span>
-                            <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">Important</span>
-                        </div>
-                    </div>
+                    <?php
+                    // Query to get announcements for the organization
+                    $announcementsQuery = "SELECT a.*, u.name as author_name 
+                                         FROM announcements a 
+                                         JOIN users u ON a.created_by = u.username 
+                                         WHERE a.org_id = '{$_SESSION['org_id']}' 
+                                         ORDER BY a.created_at DESC";
+                    $announcementsResult = mysqli_query($conn, $announcementsQuery);
                     
-                    <div class="bg-gradient-to-r from-blue-50 to-transparent p-4 rounded-lg border-l-4 border-blue-500">
-                        <div class="flex justify-between">
-                            <h3 class="font-semibold text-lg text-gray-800">New Feature: Task Management</h3>
-                            <span class="text-sm text-gray-500">1 week ago</span>
-                        </div>
-                        <p class="text-gray-600 mt-2">We've updated the task management system. Now you can easily track your progress and update task statuses directly from the dashboard.</p>
-                        <div class="flex items-center justify-between mt-3">
-                            <span class="text-sm text-gray-500">Posted by: System</span>
-                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">Update</span>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-gradient-to-r from-green-50 to-transparent p-4 rounded-lg border-l-4 border-green-500">
-                        <div class="flex justify-between">
-                            <h3 class="font-semibold text-lg text-gray-800">Team Meeting: Friday</h3>
-                            <span class="text-sm text-gray-500">3 days ago</span>
-                        </div>
-                        <p class="text-gray-600 mt-2">Don't forget our weekly team meeting this Friday at 2:00 PM. We'll discuss upcoming projects and assignments.</p>
-                        <div class="flex items-center justify-between mt-3">
-                            <span class="text-sm text-gray-500">Posted by: Department Head</span>
-                            <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">Reminder</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Additional announcements to demonstrate scrolling -->
-                    <div class="bg-gradient-to-r from-purple-50 to-transparent p-4 rounded-lg border-l-4 border-purple-500">
-                        <div class="flex justify-between">
-                            <h3 class="font-semibold text-lg text-gray-800">New Content Guidelines</h3>
-                            <span class="text-sm text-gray-500">1 week ago</span>
-                        </div>
-                        <p class="text-gray-600 mt-2">Please review the updated content guidelines for all upcoming articles. The new style guide is available in the shared documents folder.</p>
-                        <div class="flex items-center justify-between mt-3">
-                            <span class="text-sm text-gray-500">Posted by: Editorial Team</span>
-                            <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-medium">Policy</span>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-gradient-to-r from-orange-50 to-transparent p-4 rounded-lg border-l-4 border-orange-500">
-                        <div class="flex justify-between">
-                            <h3 class="font-semibold text-lg text-gray-800">Upcoming Training Session</h3>
-                            <span class="text-sm text-gray-500">2 weeks ago</span>
-                        </div>
-                        <p class="text-gray-600 mt-2">There will be a training session on the new content management system next Monday at 10:00 AM. Attendance is mandatory for all content creators.</p>
-                        <div class="flex items-center justify-between mt-3">
-                            <span class="text-sm text-gray-500">Posted by: Training Department</span>
-                            <span class="px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-xs font-medium">Training</span>
-                        </div>
-                    </div>
+                    if ($announcementsResult && mysqli_num_rows($announcementsResult) > 0) {
+                        while ($announcement = mysqli_fetch_assoc($announcementsResult)) {
+                            // Determine color scheme based on category
+                            $categoryColors = [
+                                'Important' => ['bg' => 'from-bedan-red/10', 'border' => 'border-bedan-red'],
+                                'Update' => ['bg' => 'from-blue-50', 'border' => 'border-blue-500'],
+                                'Reminder' => ['bg' => 'from-green-50', 'border' => 'border-green-500'],
+                                'Policy' => ['bg' => 'from-purple-50', 'border' => 'border-purple-500'],
+                                'Training' => ['bg' => 'from-orange-50', 'border' => 'border-orange-500']
+                            ];
+                            
+                            $colors = $categoryColors[$announcement['category']] ?? $categoryColors['Important'];
+                            ?>
+                            <div class="bg-gradient-to-r <?php echo $colors['bg']; ?> to-transparent p-4 rounded-lg border-l-4 <?php echo $colors['border']; ?>">
+                                <div class="flex justify-between">
+                                    <h3 class="font-semibold text-lg text-gray-800"><?php echo htmlspecialchars($announcement['title']); ?></h3>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-sm text-gray-500"><?php echo date('M d, Y', strtotime($announcement['created_at'])); ?></span>
+                                        <?php if ($_SESSION['position'] == 'President'): ?>
+                                        <div class="flex space-x-2">
+                                            <a href="edit_announcement.php?id=<?php echo $announcement['announcement_id']; ?>" 
+                                               class="text-blue-600 hover:text-blue-800 transition-colors">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="delete_announcement.php?id=<?php echo $announcement['announcement_id']; ?>" 
+                                               onclick="return confirm('Are you sure you want to delete this announcement?')"
+                                               class="text-red-600 hover:text-red-800 transition-colors">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600 mt-2"><?php echo nl2br(htmlspecialchars($announcement['content'])); ?></p>
+                                <div class="flex items-center justify-between mt-3">
+                                    <span class="text-sm text-gray-500">Posted by: <?php echo htmlspecialchars($announcement['author_name']); ?></span>
+                                    <span class="px-3 py-1 bg-<?php echo strtolower($announcement['category']); ?>-100 text-<?php echo strtolower($announcement['category']); ?>-800 rounded-full text-xs font-medium">
+                                        <?php echo htmlspecialchars($announcement['category']); ?>
+                                    </span>
+                                </div>
+                            </div>
+                            <?php
+                        }
+                    } else {
+                        echo '<div class="text-center text-gray-500 py-4">No announcements yet.</div>';
+                    }
+                    ?>
                 </div>
             </div>
 
@@ -195,13 +190,13 @@ if (isset($_SESSION["username"]) && isset($_SESSION["org_id"])) {
                                 <option value="my" <?= (isset($_GET['view']) && $_GET['view'] == 'my') ? 'selected' : '' ?>>My Tasks</option>
                             </select>
                         </form>
-                        <button class="bg-bedan-red hover:bg-bedan-red-light text-white px-4 py-2 rounded-md text-sm font-medium transition-all">
+                        <button id="refreshButton" class="bg-bedan-red hover:bg-bedan-red-light text-white px-4 py-2 rounded-md text-sm font-medium transition-all">
                             <i class="fas fa-sync-alt mr-2"></i>Refresh
                         </button>
                     </div>
                 </div>
 
-                <div class="overflow-x-auto">
+                <div id="assignmentsTableContainer" class="overflow-x-auto">
                     <table class="min-w-full">
                         <thead>
                             <tr class="bg-gray-50">
@@ -308,6 +303,32 @@ if (isset($_SESSION["username"]) && isset($_SESSION["org_id"])) {
             </div>
         </footer>
         <script src="notifications.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                document.getElementById('refreshButton').addEventListener('click', function() {
+                    refreshAssignmentsTable();
+                });
+                
+                function refreshAssignmentsTable() {
+                    const container = document.getElementById('assignmentsTableContainer');
+                    const viewParam = '<?= isset($_GET['view']) ? $_GET['view'] : 'all' ?>';
+                    
+                    // Show loading indicator
+                    container.innerHTML = '<div class="text-center py-6"><i class="fas fa-spinner fa-spin text-bedan-red text-2xl"></i><p class="mt-2 text-gray-600">Refreshing data...</p></div>';
+                    
+                    // Fetch updated table data
+                    fetch('get_assignments_table.php?view=' + viewParam)
+                        .then(response => response.text())
+                        .then(data => {
+                            container.innerHTML = data;
+                        })
+                        .catch(error => {
+                            console.error('Error refreshing table:', error);
+                            container.innerHTML = '<div class="text-center py-6 text-red-600">Failed to refresh data. Please try again.</div>';
+                        });
+                }
+            });
+        </script>
     </body>
 </html>
 <?php

@@ -181,9 +181,9 @@ if (isset($_SESSION["username"]) && isset($_SESSION["org_id"])) {
             <div class="bg-white rounded-lg shadow-md p-6">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-xl font-bold text-gray-800">All Tasks</h2>
-                    <button class="bg-bedan-red hover:bg-bedan-red-light text-white px-4 py-2 rounded-md text-sm font-medium transition-all">
+                    <a href="export_tasks.php<?php echo isset($_GET['department']) || isset($_GET['status']) ? '?' . http_build_query($_GET) : ''; ?>" class="bg-bedan-red hover:bg-bedan-red-light text-white px-4 py-2 rounded-md text-sm font-medium transition-all">
                         <i class="fas fa-download mr-2"></i>Export Report
-                    </button>
+                    </a>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -246,6 +246,7 @@ if (isset($_SESSION["username"]) && isset($_SESSION["org_id"])) {
                 &copy; All rights reserved.
             </div>
         </footer>
+        <script src="notifications.js"></script>
     </body>
 </html>
 <?php
