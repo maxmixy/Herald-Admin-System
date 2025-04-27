@@ -137,9 +137,15 @@ if (isset($_SESSION["username"]) && isset($_SESSION["org_id"])) {
                                 readonly>
                                 <option value="">Select team member first</option>
                                 <?php
+                                // Include default department options
+                                $defaultDepartments = ["Creatives", "Finance", "Logistics"];
+                                
                                 // Get unique departments from users
-                                $departments = array_unique(array_column($users, 'department'));
-                                foreach ($departments as $dept) {
+                                $userDepartments = array_unique(array_column($users, 'department'));
+                                $allDepartments = array_unique(array_merge($defaultDepartments, $userDepartments));
+                                sort($allDepartments);
+                                
+                                foreach ($allDepartments as $dept) {
                                     echo "<option value=\"$dept\">$dept</option>";
                                 }
                                 ?>

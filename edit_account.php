@@ -271,13 +271,126 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <style>
+            /* Custom Tailwind-inspired Select2 styles */
+            .select2-container--default .select2-selection--single {
+                height: auto !important;
+                padding: 0.375rem 0.75rem;
+                border-radius: 0.375rem !important;
+                border-color: #D1D5DB !important;
+                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+            }
+            
+            .select2-container--default .select2-selection--single .select2-selection__arrow {
+                height: 100% !important;
+            }
+            
+            .select2-dropdown {
+                border-color: #D1D5DB !important;
+                border-radius: 0.375rem !important;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+            }
+            
+            .select2-container--default .select2-results__option--highlighted[aria-selected] {
+                background-color: #9B1919 !important;
+                color: white !important;
+            }
+            
+            .select2-container--default .select2-search--dropdown .select2-search__field {
+                border-color: #D1D5DB !important;
+                border-radius: 0.25rem !important;
+                padding: 0.375rem 0.75rem !important;
+            }
+            
+            .select2-results__option {
+                padding: 0.5rem 0.75rem !important;
+            }
+            
+            .select2-container--default .select2-selection--single .select2-selection__rendered {
+                line-height: 1.5 !important;
+                color: #1F2937 !important;
+            }
+            
+            /* Hide search dropdown for department */
+            #Department-container .select2-search--dropdown {
+                display: none;
+            }
+        </style>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                // Initialize Select2 for searchable dropdowns
-                $('.position-select, .department-select').select2({
+                // Initialize Position select with searchable functionality
+                $('#MemberPosition').select2({
                     tags: true,
                     placeholder: "Select or type to search",
-                    allowClear: true
+                    allowClear: true,
+                    width: '100%',
+                    dropdownCssClass: 'rounded-md shadow-md',
+                    minimumResultsForSearch: Infinity // Hide dropdown search
+                });
+                
+                // Clear placeholder text when clicking on Position field
+                $(document).on('mousedown', '.select2-selection--single', function(e) {
+                    if ($(this).closest('.select2-container').prev().is('#MemberPosition')) {
+                        $('#MemberPosition').select2('open');
+                        e.preventDefault();
+                    }
+                });
+                
+                // Make the Select2 input field directly editable for Position and implement search
+                $('#MemberPosition').on('select2:open', function() {
+                    $('.select2-search__field').css('display', 'none');
+                    let renderedField = $('.select2-container--open .select2-selection__rendered');
+                    renderedField.attr('contenteditable', 'true').focus();
+                    
+                    // Clear placeholder text
+                    if (renderedField.text().trim() === "Select or type to search") {
+                        renderedField.text('');
+                    }
+                    
+                    // Filter dropdown options as user types
+                    renderedField.on('input', function() {
+                        let searchText = $(this).text().trim().toLowerCase();
+                        $('.select2-results__option').each(function() {
+                            let optionText = $(this).text().toLowerCase();
+                            if (optionText.includes(searchText)) {
+                                $(this).show();
+                            } else {
+                                $(this).hide();
+                            }
+                        });
+                    });
+                });
+                
+                // Handle selection from filtered dropdown
+                $(document).on('click', '.select2-results__option', function() {
+                    let selectedText = $(this).text();
+                    let select = $('#MemberPosition');
+                    
+                    // Check if option exists, otherwise create it
+                    if (select.find("option[value='" + selectedText + "']").length === 0) {
+                        select.append(new Option(selectedText, selectedText, true, true));
+                    }
+                    
+                    select.val(selectedText).trigger('change');
+                    select.select2('close');
+                });
+                
+                // Initialize Department select without typing capability
+                $('#Department').select2({
+                    tags: false, 
+                    placeholder: "Select department",
+                    allowClear: true,
+                    width: '100%',
+                    dropdownCssClass: 'rounded-md shadow-md',
+                    minimumResultsForSearch: Infinity, // Hide search completely
+                    containerCssClass: 'department-container',
+                    dropdownParent: $('#Department').parent()
+                });
+                
+                // Prevent typing in Department field
+                $('#Department').on('keydown', function(e) {
+                    e.preventDefault();
+                    return false;
                 });
                 
                 // Show/hide associate to dropdown based on position selection
@@ -293,7 +406,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         if (!$('#AssociateTo').data('select2')) {
                             $('#AssociateTo').select2({
                                 placeholder: "Select who this user is associate to",
-                                allowClear: true
+                                allowClear: true,
+                                width: '100%',
+                                dropdownCssClass: 'rounded-md shadow-md',
+                                minimumResultsForSearch: Infinity // Hide search completely
                             });
                         }
                     } else {
@@ -306,7 +422,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (!associateContainer.classList.contains('hidden')) {
                     $('#AssociateTo').select2({
                         placeholder: "Select who this user is associate to",
-                        allowClear: true
+                        allowClear: true,
+                        width: '100%',
+                        dropdownCssClass: 'rounded-md shadow-md',
+                        minimumResultsForSearch: Infinity // Hide search completely
                     });
                 }
                 
