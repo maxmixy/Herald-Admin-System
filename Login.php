@@ -88,9 +88,7 @@
                     
                     <div class="flex items-center justify-between">
                         <div class="text-sm">
-                            <a href="#" class="font-medium text-bedan-red hover:text-bedan-red-light">
-                                Forgot password?
-                            </a>
+                            <!-- Removing the forgot password link -->
                         </div>
                     </div>
                     

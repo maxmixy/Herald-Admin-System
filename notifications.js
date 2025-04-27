@@ -3,24 +3,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const notificationDropdown = document.getElementById('notificationDropdown');
     
     if (notificationButton && notificationDropdown) {
-        // Toggle notification dropdown
-        notificationButton.addEventListener('click', function(e) {
+    // Toggle notification dropdown
+    notificationButton.addEventListener('click', function(e) {
             e.preventDefault();
-            e.stopPropagation();
-            notificationDropdown.classList.toggle('hidden');
-        });
-        
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(e) {
+        e.stopPropagation();
+        notificationDropdown.classList.toggle('hidden');
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
             if (!notificationButton.contains(e.target) && !notificationDropdown.contains(e.target)) {
-                notificationDropdown.classList.add('hidden');
-            }
-        });
-        
-        // Prevent dropdown from closing when clicking inside it
-        notificationDropdown.addEventListener('click', function(e) {
-            e.stopPropagation();
-        });
+            notificationDropdown.classList.add('hidden');
+        }
+    });
+    
+    // Prevent dropdown from closing when clicking inside it
+    notificationDropdown.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
         
         // Handle notification clicks
         const notificationLinks = document.querySelectorAll('#notificationDropdown a[data-notification-id]');

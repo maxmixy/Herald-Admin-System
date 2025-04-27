@@ -57,6 +57,12 @@ if (!isset($_SESSION["username"]) || !isset($_SESSION["org_id"]) ||
                         <span class="block sm:inline"><?php echo $_GET['success']; ?></span>
                     </div>
                 <?php } ?>
+                
+                <?php if (isset($_GET['error'])) { ?>
+                    <div class="mb-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                        <span class="block sm:inline"><?php echo urldecode($_GET['error']); ?></span>
+                    </div>
+                <?php } ?>
 
                 <form action="AddAccProc.php" method="post" class="space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -72,13 +78,45 @@ if (!isset($_SESSION["username"]) || !isset($_SESSION["org_id"]) ||
                         <div>
                             <label for="MemberPosition" class="block text-sm font-medium text-gray-700">Position</label>
                             <select name="MemberPosition" id="MemberPosition" required
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-bedan-red focus:ring-bedan-red sm:text-sm position-select">
+                                <option value="">Select position</option>
+                                <option value="President">President</option>
+                                <option value="Vice President - Internal">Vice President - Internal</option>
+                                <option value="Vice President - External">Vice President - External</option>
+                                <option value="Secretary">Secretary</option>
+                                <option value="Treasurer">Treasurer</option>
+                                <option value="Auditor">Auditor</option>
+                                <option value="Level Rep">Level Rep</option>
+                                <option value="Associate">Associate</option>
+                            </select>
+                        </div>
+
+                        <!-- Associate To (Appears only when Associate is selected) -->
+                        <div id="associateToContainer" class="hidden">
+                            <label for="AssociateTo" class="block text-sm font-medium text-gray-700">Associate To</label>
+                            <select name="AssociateTo" id="AssociateTo"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-bedan-red focus:ring-bedan-red sm:text-sm">
                                 <option value="">Select position</option>
-                                <option value="Writer">Writer</option>
-                                <option value="Section Editor">Section Editor</option>
-                                <option value="Admin">Admin</option>
-                                <option value="Head Admin">Head Admin</option>
-                                <option value="Human Resources">Human Resources</option>
+                                <option value="President">President</option>
+                                <option value="Vice President - Internal">Vice President - Internal</option>
+                                <option value="Vice President - External">Vice President - External</option>
+                                <option value="Secretary">Secretary</option>
+                                <option value="Treasurer">Treasurer</option>
+                                <option value="Auditor">Auditor</option>
+                                <option value="Level Rep">Level Rep</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Department -->
+                        <div>
+                            <label for="Department" class="block text-sm font-medium text-gray-700">Department</label>
+                            <select name="Department" id="Department" required
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-bedan-red focus:ring-bedan-red sm:text-sm department-select">
+                                <option value="">Select department</option>
+                                <option value="President">President</option>
+                                <option value="Logistics">Logistics</option>
+                                <option value="Creatives">Creatives</option>
+                                <option value="Finance">Finance</option>
                             </select>
                         </div>
 
@@ -151,7 +189,7 @@ if (!isset($_SESSION["username"]) || !isset($_SESSION["org_id"]) ||
                                     echo "<td class='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>" . ($account['created_at'] ? date('M d, Y', strtotime($account['created_at'])) : 'N/A') . "</td>";
                                     echo "<td class='px-6 py-4 whitespace-nowrap text-sm font-medium'>
                                             <a href='edit_account.php?username=" . htmlspecialchars($account['username']) . "' class='text-blue-600 hover:text-blue-900 mr-2'><i class='fas fa-edit'></i></a>
-                                            <a href='delete_account.php?username=" . htmlspecialchars($account['username']) . "' class='text-red-600 hover:text-red-900' onclick=\"return confirm('Are you sure you want to delete this account?')\"><i class='fas fa-trash'></i></a>
+                                            <a href='delete_account.php?username=" . htmlspecialchars($account['username']) . "' class='text-red-600 hover:text-red-900'><i class='fas fa-trash'></i></a>
                                         </td>";
                                     echo "</tr>";
                                 }
@@ -172,5 +210,191 @@ if (!isset($_SESSION["username"]) || !isset($_SESSION["org_id"]) ||
             </div>
         </footer>
         <script src="notifications.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <style>
+            /* Custom Tailwind-inspired Select2 styles */
+            .select2-container--default .select2-selection--single {
+                height: auto !important;
+                padding: 0.375rem 0.75rem;
+                border-radius: 0.375rem !important;
+                border-color: #D1D5DB !important;
+                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+            }
+            
+            .select2-container--default .select2-selection--single .select2-selection__arrow {
+                height: 100% !important;
+            }
+            
+            .select2-dropdown {
+                border-color: #D1D5DB !important;
+                border-radius: 0.375rem !important;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+            }
+            
+            .select2-container--default .select2-results__option--highlighted[aria-selected] {
+                background-color: #9B1919 !important;
+                color: white !important;
+            }
+            
+            .select2-container--default .select2-search--dropdown .select2-search__field {
+                border-color: #D1D5DB !important;
+                border-radius: 0.25rem !important;
+                padding: 0.375rem 0.75rem !important;
+            }
+            
+            .select2-results__option {
+                padding: 0.5rem 0.75rem !important;
+            }
+            
+            .select2-container--default .select2-selection--single .select2-selection__rendered {
+                line-height: 1.5 !important;
+                color: #1F2937 !important;
+            }
+            
+            /* Hide search dropdown for department */
+            #Department-container .select2-search--dropdown {
+                display: none;
+            }
+        </style>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Initialize Position select with searchable functionality
+                $('#MemberPosition').select2({
+                    tags: true,
+                    placeholder: "Select or type to search",
+                    allowClear: true,
+                    width: '100%',
+                    dropdownCssClass: 'rounded-md shadow-md',
+                    minimumResultsForSearch: Infinity // Hide dropdown search
+                });
+                
+                // Clear placeholder text when clicking on Position field
+                $(document).on('mousedown', '.select2-selection--single', function(e) {
+                    if ($(this).closest('.select2-container').prev().is('#MemberPosition')) {
+                        $('#MemberPosition').select2('open');
+                        e.preventDefault();
+                    }
+                });
+                
+                // Make the Select2 input field directly editable for Position and implement search
+                $('#MemberPosition').on('select2:open', function() {
+                    $('.select2-search__field').css('display', 'none');
+                    let renderedField = $('.select2-container--open .select2-selection__rendered');
+                    renderedField.attr('contenteditable', 'true').focus();
+                    
+                    // Clear placeholder text
+                    if (renderedField.text().trim() === "Select or type to search") {
+                        renderedField.text('');
+                    }
+                    
+                    // Filter dropdown options as user types
+                    renderedField.on('input', function() {
+                        let searchText = $(this).text().trim().toLowerCase();
+                        $('.select2-results__option').each(function() {
+                            let optionText = $(this).text().toLowerCase();
+                            if (optionText.includes(searchText)) {
+                                $(this).show();
+                            } else {
+                                $(this).hide();
+                            }
+                        });
+                    });
+                });
+                
+                // Handle selection from filtered dropdown
+                $(document).on('click', '.select2-results__option', function() {
+                    let selectedText = $(this).text();
+                    let select = $('#MemberPosition');
+                    
+                    // Check if option exists, otherwise create it
+                    if (select.find("option[value='" + selectedText + "']").length === 0) {
+                        select.append(new Option(selectedText, selectedText, true, true));
+                    }
+                    
+                    select.val(selectedText).trigger('change');
+                    select.select2('close');
+                });
+                
+                // Initialize Department select without typing capability
+                $('#Department').select2({
+                    tags: false, 
+                    placeholder: "Select department",
+                    allowClear: true,
+                    width: '100%',
+                    dropdownCssClass: 'rounded-md shadow-md',
+                    minimumResultsForSearch: Infinity, // Hide search completely
+                    containerCssClass: 'department-container',
+                    dropdownParent: $('#Department').parent()
+                });
+                
+                // Prevent typing in Department field
+                $('#Department').on('keydown', function(e) {
+                    e.preventDefault();
+                    return false;
+                });
+                
+                // Show/hide associate to dropdown based on position selection
+                const positionSelect = document.getElementById('MemberPosition');
+                const associateContainer = document.getElementById('associateToContainer');
+                
+                positionSelect.addEventListener('change', function() {
+                    if (this.value === 'Associate') {
+                        associateContainer.classList.remove('hidden');
+                        document.getElementById('AssociateTo').setAttribute('required', 'required');
+                        
+                        // Initialize Select2 for AssociateTo dropdown if not already initialized
+                        if (!$('#AssociateTo').data('select2')) {
+                            $('#AssociateTo').select2({
+                                placeholder: "Select who this user is associate to",
+                                allowClear: true,
+                                width: '100%',
+                                dropdownCssClass: 'rounded-md shadow-md',
+                                minimumResultsForSearch: Infinity // Hide search completely
+                            });
+                        }
+                    } else {
+                        associateContainer.classList.add('hidden');
+                        document.getElementById('AssociateTo').removeAttribute('required');
+                    }
+                });
+                
+                // Handle Reset button functionality
+                $('button[type="reset"]').on('click', function(e) {
+                    e.preventDefault(); // Prevent default reset behavior
+                    
+                    // Clear regular form fields
+                    $('form')[0].reset();
+                    
+                    // Reset Select2 fields
+                    $('#MemberPosition').val('').trigger('change');
+                    $('#Department').val('').trigger('change');
+                    $('#AssociateTo').val('').trigger('change');
+                    
+                    // Hide Associate To container
+                    associateContainer.classList.add('hidden');
+                    document.getElementById('AssociateTo').removeAttribute('required');
+                    
+                    // Focus on the first input field
+                    $('#MemberName').focus();
+                });
+                
+                // Handle form submission to format associate position
+                document.querySelector('form').addEventListener('submit', function(e) {
+                    const positionValue = positionSelect.value;
+                    if (positionValue === 'Associate') {
+                        const associateToValue = document.getElementById('AssociateTo').value;
+                        if (associateToValue) {
+                            // Let the server handle the formatting since it needs to be short enough for the database
+                            // No need to disable fields or create hidden ones - we'll use the server-side logic
+                        }
+                    }
+                });
+                
+                // Ensure org_id restriction is enforced
+                // This is handled on the server side in AddAccProc.php
+            });
+        </script>
     </body>
 </html>

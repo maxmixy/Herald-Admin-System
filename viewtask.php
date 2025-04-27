@@ -139,8 +139,43 @@ $task = $result->fetch_assoc();
                             $interval = $today->diff($deadline);
                             $daysRemaining = $deadline >= $today ? $interval->days : -$interval->days;
                             
-                            $dateClass = $daysRemaining > 3 ? 'text-green-600' : ($daysRemaining >= 0 ? 'text-yellow-600' : 'text-red-600');
-                            $dateText = $daysRemaining > 0 ? "$daysRemaining days remaining" : ($daysRemaining == 0 ? "Due today" : abs($daysRemaining) . " days overdue");
+                            // If task is completed, show a message about completion relative to deadline
+                            if ($task['status'] === 'Completed') {
+                                // Check if there's a relevant notification about completion
+                                $completionQuery = "SELECT created_at FROM notifications 
+                                                  WHERE related_id = ? AND type = 'task_update' 
+                                                  AND message LIKE '%Completed%' 
+                                                  ORDER BY created_at DESC LIMIT 1";
+                                $stmtCompletion = $conn->prepare($completionQuery);
+                                $stmtCompletion->bind_param("i", $task_id);
+                                $stmtCompletion->execute();
+                                $completionResult = $stmtCompletion->get_result();
+                                
+                                if ($completionResult && $completionRow = $completionResult->fetch_assoc()) {
+                                    // If we have a notification record of when it was completed
+                                    $completionDate = new DateTime($completionRow['created_at']);
+                                    $completionInterval = $deadline->diff($completionDate);
+                                    $daysOffTarget = $deadline >= $completionDate ? $completionInterval->days : -$completionInterval->days;
+                                    
+                                    if ($daysOffTarget > 0) {
+                                        $dateClass = 'text-green-600';
+                                        $dateText = "Completed $daysOffTarget days early";
+                                    } else if ($daysOffTarget < 0) {
+                                        $dateClass = 'text-yellow-600';
+                                        $dateText = "Completed " . abs($daysOffTarget) . " days late";
+                                    } else {
+                                        $dateClass = 'text-green-600';
+                                        $dateText = "Completed on deadline day";
+                                    }
+                                } else {
+                                    // If we can't determine when it was completed specifically
+                                    $dateClass = 'text-green-600';
+                                    $dateText = "Task completed";
+                                }
+                            } else {
+                                $dateClass = $daysRemaining > 3 ? 'text-green-600' : ($daysRemaining >= 0 ? 'text-yellow-600' : 'text-red-600');
+                                $dateText = $daysRemaining > 0 ? "$daysRemaining days remaining" : ($daysRemaining == 0 ? "Due today" : abs($daysRemaining) . " days overdue");
+                            }
                             ?>
                             <p class="text-sm <?php echo $dateClass; ?>"><?php echo $dateText; ?></p>
                         </div>

@@ -77,10 +77,13 @@
                                 $taskUrl = "viewtask.php?id=" . $notification['related_id'];
                             }
                     ?>
-                    <a href="<?php echo $taskUrl; ?>" class="block p-4 border-b border-gray-200 hover:bg-gray-50 <?php echo $isUnread ? 'bg-gray-50' : ''; ?>"
+                    <a href="<?php echo $taskUrl; ?>" class="block p-4 border-b border-gray-200 hover:bg-gray-50 <?php echo $isUnread ? 'bg-gray-50' : ''; ?> relative"
                        data-notification-id="<?php echo $notification['notification_id']; ?>">
-                        <p class="text-sm font-medium text-gray-800"><?php echo htmlspecialchars($notification['message']); ?></p>
-                        <p class="text-xs text-gray-500"><?php echo date('M d, Y H:i', strtotime($notification['created_at'])); ?></p>
+                        <?php if ($isUnread): ?>
+                        <span class="absolute left-2 top-1/2 -translate-y-1/2 h-2 w-2 bg-red-500 rounded-full"></span>
+                        <?php endif; ?>
+                        <p class="text-sm <?php echo $isUnread ? 'font-bold pl-3' : 'font-medium'; ?> text-gray-800"><?php echo htmlspecialchars($notification['message']); ?></p>
+                        <p class="text-xs text-gray-500 <?php echo $isUnread ? 'pl-3' : ''; ?>"><?php echo date('M d, Y H:i', strtotime($notification['created_at'])); ?></p>
                     </a>
                     <?php
                         endwhile;
@@ -90,9 +93,6 @@
                         No notifications yet
                     </div>
                     <?php endif; ?>
-                </div>
-                <div class="p-2 text-center border-t border-gray-200">
-                    <a href="view_all_notifications.php" class="text-sm text-bedan-red hover:underline">View all notifications</a>
                 </div>
             </div>
         </div>
