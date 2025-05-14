@@ -19,7 +19,13 @@
                 <span class="ml-2">Assignments</span>
             </div>
         </a>
-        <?php if ($_SESSION["position"] == 'President' || $_SESSION["position"] == 'Head Admin' || $_SESSION["position"] == 'OSA'){ ?>
+        <a href="Templates.php" class="text-white <?php echo ($current_page == 'Templates.php') ? 'bg-white/20' : 'hover:bg-white/20'; ?> px-3 py-2 rounded-md text-sm font-medium transition-all">
+                <div class="flex items-center">
+                    <i class="fas fa-laptop-file w-5 text-center"></i>
+                    <span class="ml-2">Document Templates</span>
+                </div>
+            </a>
+        <?php if ($_SESSION["position"] == 'President' || $_SESSION["position"] == 'Head Admin'){ ?>
             
             <a href="AssignTasks.php" class="text-white <?php echo ($current_page == 'AssignTasks.php') ? 'bg-white/20' : 'hover:bg-white/20'; ?> px-3 py-2 rounded-md text-sm font-medium transition-all">
                 <div class="flex items-center">
@@ -40,6 +46,15 @@
                     <span class="ml-2">Create Accounts</span>
                 </div>
             </a>
+        <?php } ?>
+        <?php if ($_SESSION["position"] == 'OSA'){ ?>
+            <a href="AddTemplate.php" class="text-white <?php echo ($current_page == 'AddTemplate.php') ? 'bg-white/20' : 'hover:bg-white/20'; ?> px-3 py-2 rounded-md text-sm font-medium transition-all">
+                <div class="flex items-center">
+                    <i class="fas fa-download w-5 text-center"></i>
+                    <span class="ml-2">Add Document Template</span>
+                </div>
+            </a>
+            
         <?php } ?>
         
         <!-- Notification Button -->
