@@ -52,7 +52,7 @@ if (isset($_SESSION["username"]) && isset($_SESSION["org_id"])) {
 <!DOCTYPE html>
 <html>
     <head>  
-        <title>Assign Tasks - The Bedan Herald</title>
+        <title>Assign Tasks</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -135,7 +135,7 @@ if (isset($_SESSION["username"]) && isset($_SESSION["org_id"])) {
                             <select name="section" id="section" required
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-bedan-red focus:ring-bedan-red sm:text-sm bg-gray-100"
                                 readonly>
-                                <option value="">Select team member first</option>
+                                <option value="">Select User Department</option>
                                 <?php
                                 // Include default department options
                                 $defaultDepartments = ["Creatives", "Finance", "Logistics"];

@@ -16,7 +16,7 @@ if (!isset($_SESSION["username"]) || !isset($_SESSION["org_id"]) ||
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Create Account - The Bedan Herald</title>
+        <title>Create Account</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <script>
@@ -47,7 +47,7 @@ if (!isset($_SESSION["username"]) || !isset($_SESSION["org_id"]) ||
             <!-- Page Title -->
             <div class="bg-white rounded-lg shadow-md p-6 mb-6">
                 <h1 class="text-2xl font-bold text-gray-800">Create New Account</h1>
-                <p class="text-gray-600 mt-2">Add new members to The Bedan Herald team</p>
+                <p class="text-gray-600 mt-2">Add new members to the organization</p>
             </div>
 
             <!-- Account Creation Form -->

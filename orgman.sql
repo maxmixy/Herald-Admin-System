@@ -106,8 +106,8 @@ CREATE TABLE `organizations` (
 --
 
 INSERT INTO `organizations` (`org_id`, `org_name`, `classification`, `departments`) VALUES
-('curr_bits', 'Current Bits', 'Technology', 'IT, Software Development, QA'),
-('exc_jbes', 'Excellence JBES', 'Education', 'Teaching, Research, HR');
+('curr_bits', 'Bits', 'Curricular', 'SET'),
+('curr_jbes', 'JBES', 'Curricular', 'SET');
 
 -- --------------------------------------------------------
 
