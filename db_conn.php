@@ -1,14 +1,14 @@
 <?php
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-$servername = "localhost";
-	$username = "heraldmember";
-	$password = "ctkXb2cVpsQjbjR";
-	$dbname = "i8258503_wp1";
 
-	// Create connection
-	$conn = mysqli_connect($servername, $username, $password, $dbname);
+    // Database configuration
+    $host = 'localhost';
+    $dbname = 'u659680966_orgman';
+    $username = 'u659680966_taskorgman';
+    $password = 'Taskorgmanadmin123';
 
-	// Check connection
-	if (!$conn) {
-	  die("Connection failed: " . mysqli_connect_error());
-	} 
+    $conn = mysqli_connect($host, $username ,$password, $dbname);
+    
